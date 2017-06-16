@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e6e72a9a0905697d16a01c6e856c586b",
-    "content-hash": "51cf1ca222a0650487c7c2ef0f9d4982",
+    "content-hash": "0af6ff53834ccc130657a7d3aea43758",
     "packages": [
         {
             "name": "h4cc/wkhtmltopdf-amd64",
@@ -45,7 +44,7 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2016-02-02 19:38:55"
+            "time": "2016-02-02T19:38:55+00:00"
         },
         {
             "name": "knplabs/knp-snappy",
@@ -110,20 +109,66 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2015-11-17 13:16:27"
+            "time": "2015-11-17T13:16:27+00:00"
         },
         {
-            "name": "symfony/process",
-            "version": "v3.1.0",
+            "name": "mustache/mustache",
+            "version": "v2.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "1574f3451b40fa9bbae518ef71d19a56f409cac0"
+                "url": "https://github.com/bobthecow/mustache.php.git",
+                "reference": "a3f6d55996dd28b58f3a909d474189a3c1aa693f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/1574f3451b40fa9bbae518ef71d19a56f409cac0",
-                "reference": "1574f3451b40fa9bbae518ef71d19a56f409cac0",
+                "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/a3f6d55996dd28b58f3a909d474189a3c1aa693f",
+                "reference": "a3f6d55996dd28b58f3a909d474189a3c1aa693f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~1.11",
+                "phpunit/phpunit": "~3.7|~4.0|~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mustache": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Hileman",
+                    "email": "justin@justinhileman.info",
+                    "homepage": "http://justinhileman.com"
+                }
+            ],
+            "description": "A Mustache implementation in PHP.",
+            "homepage": "https://github.com/bobthecow/mustache.php",
+            "keywords": [
+                "mustache",
+                "templating"
+            ],
+            "time": "2016-07-31T06:18:27+00:00"
+        },
+        {
+            "name": "symfony/process",
+            "version": "v3.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
+                "reference": "8e30690c67aafb6c7992d6d8eb0d707807dd3eaf",
                 "shasum": ""
             },
             "require": {
@@ -132,7 +177,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -159,7 +204,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-04-12 19:11:33"
+            "time": "2017-05-22T12:32:03+00:00"
         }
     ],
     "packages-dev": [],

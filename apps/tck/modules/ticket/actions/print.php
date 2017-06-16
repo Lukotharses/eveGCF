@@ -377,6 +377,11 @@
 
     if ( $request->hasParameter('direct') )
     {
+      if($request->hasParameter('json')) {
+        echo json_encode($this->transaction->Tickets->toArray());
+        return sfView::NONE;
+      }
+      
       if ( count($this->tickets) <= 0 )
         return sfView::NONE;
 

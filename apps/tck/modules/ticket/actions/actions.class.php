@@ -372,4 +372,16 @@ class ticketActions extends sfActions
     // tarif_names []
     require('transaction-form.php');
   }
+  
+  // goto customize
+  public function executeCustomize(sfWebRequest $request)
+  {
+      
+  }
+  //goto customPrint
+  public function executeCustomPrint(sfWebRequest $request)
+  {
+      
+  }
+  
 }

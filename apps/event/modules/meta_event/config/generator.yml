@@ -1,0 +1,42 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           MetaEvent
+    theme:                 jroller
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          meta_event
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        list_hide_in_month_calendars: { label: In calendars? }
+        hide_in_month_calendars: { label: To be hidden in calendars? }
+        list_description: { label: Description }
+        Picture:
+          label: Tickets background
+          help: Optional and used only with dematerialized ticketing
+      list:
+        display: [name, _list_description, _list_hide_in_month_calendars]
+        sort: [translation.name,'']
+        batch_actions:
+          _delete: ~
+          _duplicate: ~
+      filter:
+        display: [name, users_list]
+      form:
+        display:
+          General: [name, description, hide_in_month_calendars]
+          Tickets: [Picture, _show_picture, _form_picture_del]
+          Users:   [users_list]
+      edit:
+        title: Edit Meta event "%%name%%"
+      new:     ~
+      show:
+        display:
+          General: [name, description]
+          Tickets: [_show_picture]

@@ -1,0 +1,31 @@
+all:
+  credentials: pr-contact
+
+new:
+  credentials: pr-contact-new
+create:
+  credentials: pr-contact-new
+
+update:
+  credentials: pr-contact-edit
+getSpecializedForm:
+  credentials: pr-contact-edit
+
+delete:
+  credentials: pr-contact-del
+batchDelete:
+  credentials: pr-contact-del
+batchMerge:
+  credentials: [pr-contact-edit, pr-contact-del]
+
+labels:
+  credentials: pr-contact-labels
+csv:
+  credentials: pr-contact-csv
+vcf:
+  credentials: pr-contact-csv
+group:
+  credentials: pr-group-perso
+
+card:
+  credentials: pr-card-view

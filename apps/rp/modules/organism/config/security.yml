@@ -1,0 +1,24 @@
+all:
+  credentials: pr-organism
+
+new:
+  credentials: pr-organism-new
+create:
+  credentials: pr-organism-new
+
+update:
+  credentials: pr-organism-edit
+
+delete:
+  credentials: pr-organism-del
+batchDelete:
+  credentials: pr-organism-del
+
+csv:
+  credentials: [ pr-contact-csv, pr-organism ]
+vcf:
+  credentials: [ pr-contact-csv, pr-organism ]
+labels:
+  credentials: [ pr-contact-labels, pr-organism ]
+group:
+  credentials: pr-group-perso

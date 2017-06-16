@@ -1,0 +1,9 @@
+csvSuccess:
+  has_layout: false
+  http_metas:
+    content-type: text/comma-separated-values
+    content-disposition: attachment; filename="stats-activity.csv"
+jsonSuccess:
+  has_layout: false
+  http_metas:
+    content-type: text/json

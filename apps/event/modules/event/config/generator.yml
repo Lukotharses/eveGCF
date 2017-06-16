@@ -1,0 +1,103 @@
+<?php $museum = sfContext::getInstance()->getConfiguration()->getApplication() == 'museum' ?>
+<?php $type = sfConfig::get('project_museums_type', 'museum') ?>
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Event
+    theme:                 jroller
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          event
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:
+        display_by_default: { label: Display in ticketting }
+        EventCategory: { label: Category }
+        event_category_id: { label: Category }
+        event_category_description: { label: Detailed category }
+        duration: { label: Duration }
+        companies_list: { label: Compagnies }
+        extradesc: { label: Extra description }
+        extraspec: { label: Extra specification }
+        image_url: { label: Image URL }
+        age_min_h_r: { label: Age min }
+        age_max_h_r: { label: Age max }
+        duration_h_r: { label: Duration }
+        short_name: { label: Short name }
+        staging_label: { label: Staging label, help: Deprecated }
+        writer_label: { label: Writer label, help: Deprecated }
+        staging: { help: Deprecated }
+        writer: { help: Deprecated }
+        web_price: { help: Deprecated }
+        web_price_group: { help: Deprecated }
+        image_url: { help: Deprecated }
+        show_image_url: { help: Deprecated }
+        list_manifestations: { label: <?php echo $museum ? 'Periods' : 'Manifestations' ?> }
+        list_manifestations_gauges: { label: <span title="booked/total (sold-booked-demanded)">Gauges</span> }
+        list_manifestations_places: { label: Locations }
+        accounting_account: { label: Account, help: For the accounting department }
+        manif_blocking : { label: Blocking manifestations }
+        manif_confirmed: { label: Confirmed manifestations }
+        manif_conflict : { label: Conflicted manifestations }
+        manif_optional : { label: Optional manifestations }
+        list_manifestations_extra_informations: { label: "" }
+        list_best_seats: { label: Best seats }
+        colors_list: { label: Color }
+        dates_range: { type: date }
+        Picture: { label: Poster }
+        voucherized: { label: Using vouchers }
+        <?php if ( $museum ): ?><?php echo PHP_EOL ?>
+        MetaEvent: { label: Meta <?php echo $type == 'museum' ? 'visit' : 'opening' ?> }
+        meta_event_id: { label: Meta <?php echo $type == 'museum' ? 'visit' : 'opening' ?> }
+        <?php endif ?><?php echo PHP_EOL ?>
+      list:
+        title: List of <?php echo $museum ? (sfConfig::get('project_museums_type', 'museum') == 'museum' ? 'visits' : 'openings') : 'events' ?><?php echo PHP_EOL ?>
+        display: [MetaEvent, name, EventCategory, duration_h_r, age_min_h_r, _list_manifestations, _list_manifestations_gauges, _list_manifestations_places<?php if ( !$museum ): ?>, _list_best_seats<?php endif ?>, _list_manifestations_extra_informations]
+        table_method: <?php echo $museum ? 'retrieveMuseumList' : 'retrieveList' ?><?php echo PHP_EOL ?>
+        max_per_page: <?php echo sfConfig::get('app_listing_max_per_page',20).PHP_EOL ?>
+        object_actions:
+          _show: ~
+          _edit: ~
+          _delete: ~
+          add_manif:
+            action: addManifestation
+            credentials: [event-manif-new]
+            label: Add a manifestation
+        batch_actions:
+          _delete: ~
+          _merge: ~
+          _duplicate: ~
+          #_bestFreeSeat:
+          #  label: Best free seat
+      filter:
+        display:
+          Event:              [name, meta_event_id, event_category_id]
+          <?php echo $museum ? 'Periods' : 'Manifestations' ?>: [dates_range, day_of_the_week, location_id, workspaces_list, participants_list, duration, colors_list, voucherized]
+          Bookings:           [contact_id, manif_confirmed, manif_blocking, manif_conflict, manif_optional]
+          Extra informations: [age, age_min, age_max, companies_list, display_by_default]
+      form: ~
+      edit:
+        title: Edit <?php echo $museum ? ($type == 'museum' ? 'Visit' : 'Opening') : 'Event' ?> %%name%%
+        display:
+          General:   [name, short_name, subtitle, meta_event_id, event_category_id, event_category_description, companies_list]
+          Details:   [duration, _form_duration_days, display_by_default, accounting_account, age_min, age_max, description]
+          Web Content: [Picture, _show_picture, _form_picture_del, extradesc, extraspec]
+          <?php if ( sfConfig::get('app_ticketting_dematerialized',false) ): ?>Checkpoints: [_show_checkpoints_notice, _form_checkpoints]<?php endif; echo PHP_EOL; ?>
+      new:
+        <?php if ( $museum ) echo 'title: New '.($type == 'museum' ? 'Visit' : 'Opening') ?><?php echo PHP_EOL ?>
+        display:
+          General:   [name, short_name, subtitle, meta_event_id, event_category_id, event_category_description<?php if ( !$museum ): ?>, companies_list<?php endif ?>]
+          Details:   [<?php echo !$museum ? 'duration, ' : '' ?>display_by_default, accounting_account, age_min, age_max, description]
+          <?php echo $museum ? 'Periods' : 'Manifestations' ?>: [Manifestations]
+          Web Content: [extradesc, extraspec]
+      show:
+        display:
+          General:   [name, short_name, subtitle, _show_meta_event, _show_event_category, event_category_description, _show_companies_list]
+          Details:   [_show_duration, _show_display_by_default, age_min_h_r, age_max_h_r, _show_description]
+          Web Content: [_show_picture, _show_extradesc, _show_extraspec]
+          Checkpoints: [_show_checkpoints, _show_checkpoints_notice]

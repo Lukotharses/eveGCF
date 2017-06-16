@@ -1,0 +1,4 @@
+all:
+  credentials: [museum-gauge-timeout]
+autoExit:
+  credentials: [super-admin]

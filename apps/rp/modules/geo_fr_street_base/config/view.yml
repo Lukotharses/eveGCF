@@ -1,0 +1,9 @@
+ajaxSuccess:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+districtsSuccess:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+

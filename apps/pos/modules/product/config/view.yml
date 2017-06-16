@@ -1,0 +1,25 @@
+all:
+  javascripts: [pos]
+ajaxSuccess:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+salesTrendsJson:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+declinationsTrendsJson:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+stateJson:
+  has_layout: false
+  http_metas:
+    content-type: application/json
+indexSuccess:
+  javascripts: [pos-list, jquery.middleclick.js]
+csvSuccess:
+  has_layout: false
+  http_metas:
+    content-type: text/comma-separated-values
+    content-disposition: attachment; filename="products.csv"

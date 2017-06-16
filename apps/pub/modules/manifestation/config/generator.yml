@@ -1,0 +1,37 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Manifestation
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          manifestation
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+<?php $vel = sfConfig::get('app_tickets_vel', array()); echo PHP_EOL; ?>
+
+    config:
+      actions: ~
+      fields:
+        happens_at: { label: Date }
+        formatted_date: { label: Date }
+        happens_at_time_h_r: { label: Time }
+        list_tickets: { label: '' }
+        list_picture: { label: '' }
+      list:
+        object_actions: []
+        actions: []
+        batch_actions: []
+        sort: ['happens_at, w.name', '']
+        display: [_list_picture, _list_happens_at, _list_day_name, =formatted_date, happens_at_time_h_r, Event, Location, _MetaEvent, _list_tickets]
+        title: Dates
+        table_method: retrievePublicList
+        max_per_page: <?php echo sfConfig::get('app_tickets_nb_manifestations_per_default',100).PHP_EOL ?>
+      filter:
+        display: [event_id, happens_at]
+      form:    ~
+      edit:    ~
+      new:     ~

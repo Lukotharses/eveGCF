@@ -1,0 +1,8 @@
+all:
+  credentials: [tck-transaction]
+getStore:
+  credentials: [tck-pos]
+dispatch:
+  credentials: [tck-unblock]
+directPrintLog:
+  credentials: [tck-print-ticket]

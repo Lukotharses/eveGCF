@@ -1,0 +1,3 @@
+default:
+  javascripts: [tck-debts, list-scroll, list-extract]
+  stylesheets: [tck-debts]

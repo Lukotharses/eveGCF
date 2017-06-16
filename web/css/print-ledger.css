@@ -1,0 +1,9 @@
+html { background-color: white; }
+html #content { background-color: white; }
+html #logo { display: none; }
+html body { font-size: 10px; }
+html #jappix_mini { display: none !important; }
+
+ both > .ui-w dget-content { float: none; }
+#sales .ui-w dget-header button { display: none; }
+#content #ledger td.contact { min-width: 50mm; }

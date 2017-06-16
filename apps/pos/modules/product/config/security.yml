@@ -1,0 +1,28 @@
+delPicture:
+  credentials: [pos-product-edit]
+addDeclination:
+  credentials: [pos-product-edit]
+delDeclination:
+  credentials: [pos-product-edit]
+update:
+  credentials: [pos-product-edit]
+
+duplicate:
+  credentials: [pos-product-new]
+new:
+  credentials: [pos-product-new]
+create:
+  credentials: [pos-product-new]
+
+delete:
+  credentials: [pos-product-del]
+batchDelete:
+  credentials: [pos-product-del]
+
+state:
+  credentials: [pos-product-stats]
+declinationsTrends:
+  credentials: [pos-product-stats]
+salesTrends:
+  credentials: [pos-product-stats]
+

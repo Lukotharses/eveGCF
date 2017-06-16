@@ -1,0 +1,17 @@
+invoiceSuccess:
+  javascripts: [-*]
+  stylesheets: [-*, print-accounting: {media: all}, /private/print-accounting.css: {media: all}]
+getTicketsSuccess:
+  layout: nude
+  javascripts: [-*]
+  stylesheets: [-*]
+contactsSuccess:
+  has_layout: false
+  http_metas:
+    content-type: text/comma-separated-values
+    content-disposition: attachment; filename=contacts-list.csv
+    
+ajaxJson:
+  has_layout: false
+  http_metas:
+    content-type: application/json

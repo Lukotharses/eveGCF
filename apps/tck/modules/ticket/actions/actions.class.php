@@ -376,12 +376,32 @@ class ticketActions extends sfActions
   // goto customize
   public function executeCustomize(sfWebRequest $request)
   {
-      
+          
+          function comPar2($a, $b){
+              if($a['optional']==$b['optional']){
+                  return 0;
+              }
+              return ($a['optional'])?1:-1;
+          }
+          
+          //$this->form = new CustomTicketForm();
+          $fileJson = fopen(dirname(__FILE__).'/../config/ticketParam.json', 'r');
+          $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
+          fclose($fileJson);
+          uasort($jsonParam, 'comPar2');
+          $this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
+          $this->param = $jsonParam;
+          
   }
   //goto customPrint
   public function executeCustomPrint(sfWebRequest $request)
   {
       
+  }
+  
+  //for testing purpose !!!not in prod(?)
+  public function executeTesting(sfWebRequest $request){
+
   }
   
 }

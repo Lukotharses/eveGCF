@@ -262,3 +262,116 @@
     
 </script>
 
+///PHP residu
+                                <?php
+//    var_dump(gettype($param));
+//    $count = 0;
+//    $notOpt = 0;
+//    $optDispl = 0;
+//    $optNotDispl = 0;    
+//    foreach($param as $key => $value){
+//        $count++;
+//        $str = '<tr><td>'.$key.'</td><td><input type="checkbox" id="'.$key.'" checked=';
+//        if($value['optional']&&$value['displayed']){
+//            $str.=false;
+//            $optDispl++;
+//        }else if (! $value['optional']){
+//            $str.='true disabled';
+//            $notOpt++;
+//        }else{
+//            $optNotDispl++;
+//            continue;
+//            
+//        }
+//        $str.=' /></td></tr>';
+//        echo $str;
+//    }
+//    var_dump($count, $notOpt, $optDispl, $optNotDispl);
+                                $font = array("Lucida" => "Lucida", "Verdana" => "Verdana", "Helvetica" => "Helvetica", "Lucida-Console" => "Lucida Console");
+//        foreach($param as $key => $value){
+//            $str = '<li class="list-group-item"><label for="'.$key.'">'.$key.
+//                    ' </label><input type="checkbox" id="'.$key.'" checked=';
+//            
+//            if(!$value['optional']){
+//                //not an option
+//                $str.='"1" disabled="1"';
+//            }else if($value['displayed']){
+//                //optional but displayed
+//                $str .= '"0"';
+//            }else continue; //skip the rest
+//            //finish the form line
+//            $str.='</input>';
+//            $str.= '<select name="'.$key.'.font" id="'.$key.'.font">';
+//            foreach ($font as $k => $v) {
+//                $str.='<option value="'.$k.'">'.$v.'</option>';
+//            }
+//            $str.='</select>';
+//            $str .='<select name="'.$key.'.size" id="'.$key.'.size">';
+//            for ($i = 6; $i < 20; $i++) {
+//                $str.='<option value="'.$i.'">'.$i.'</option>';
+//            }
+//            $str.='</select>';
+//            $str.='</li>';
+//            echo $str;
+                                //another test with while
+//                                $current = $param->current();
+//                                $key = $param->key();
+//                                echo $key;
+//                                echo '  current ';
+//                                var_dump($current->getRaw('optional'));
+//                                var_dump($current);
+//
+//                                while ($param->valid()) {
+//                                    $current = $param->current();
+//                                    $key = $param->key();
+//                                    $optional = $current->getRaw('optional');
+//                                    $displayed = $current->getRaw('displayed');
+//
+//                                    $str = '<li class="list-group-item"><label for="' . $key . '">' . $key .
+//                                            ' </label><input type="checkbox" id="' . $key;
+//
+//                                    if (!$optional) {
+//                                        //not an option
+//                                        $str.='checked disabled';
+//                                    }else if (!$displayed)
+//                                        continue; //skip the rest
+//                                        
+//                                    //finish the form line
+//                                    $str.='>';
+//                                    $str.= '<select name="' . $key . '.font" id="' . $key . '.font">';
+//                                    foreach ($font as $k => $v) {
+//                                        $str.='<option value="' . $k . '">' . $v . '</option>';
+//                                    }
+//                                    $str.='</select>';
+//                                    $str .='<select name="' . $key . '.size" id="' . $key . '.size">';
+//                                    for ($i = 6; $i < 20; $i++) {
+//                                        $str.='<option value="' . $i . '">' . $i . '</option>';
+//                                    }
+//                                    $str.='</select>';
+//                                    $str.='</li>';
+//                                    echo $str;
+//
+//                                    $param->next();
+//                                }
+                                ?>
+                                        
+                                        
+        //Handlebars.templates['templateTicket.html']
+        //var source   = $("#entry-template").html();
+        //var template = Handlebars.compile(source);
+
+//    var request = new XMLHttpRequest();
+//    request.open('GET', 'http://127.0.0.1/tck.php/ticket/14586/print?direct&json', false);
+//    request.onload = function () {
+//            var tickets = JSON.parse(this.response);
+//            var key;
+//            var ticket = tickets[0];
+//
+//            //html    = template(ticket);
+//            html = Handlebars.templates['templateTicket.html'](ticket);
+//            console.log('HTML '+ html);
+//        };
+//
+//    request.send();
+//    console.log('HTMLOUT'+ html);
+//    document.getElementById("testing").innerHTML = html;

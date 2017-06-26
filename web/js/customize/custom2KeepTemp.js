@@ -1,7 +1,5 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * THIS IS JUST A BACK-UP FILE   !! 2B deleted !!
  */
 <div id="page"></div>
     <script id="entry-template" type="text/x-handlebars-template">
@@ -375,3 +373,31 @@
 //    request.send();
 //    console.log('HTMLOUT'+ html);
 //    document.getElementById("testing").innerHTML = html;
+
+
+
+//customize via form
+<form class="form-inline">
+                            <ul class="list-group">
+                                <h4>Elements imposés</h4>
+                                <?php
+                                $breaker = true;
+                                foreach ($param as $key => $value) {
+                                    if ($breaker && $value['optional']) {
+                                        echo '<hr><h4>Elements optionnels </h4>';
+                                        echo '<div class="scrolled">';
+                                        $breaker = false;
+                                    }
+                                    echo '<li class="list-group-item">';
+                                    //TODO ? put style in css
+                                    echo $tckForm[$key]->renderRow(array('class' => "form-control input-sm"))
+                                    . $tckForm[$key . '.font']->render(array('class' => "form-control input-sm", 'style' => 'width: 100px; float: right;'))
+                                    . $tckForm[$key . '.size']->render(array('class' => "form-control input-sm", 'style' => 'float: right;'))
+                                    ;
+                                    echo '</li>';
+                                }
+                                ?>
+                                </div>
+                                <li class="list-group-item"><input type="submit" /></li>
+                            </ul>
+                        </form>

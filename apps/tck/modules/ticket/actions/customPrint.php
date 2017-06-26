@@ -22,9 +22,3 @@
 ***********************************************************************************/
 ?>
 <?php
-/*$this->getResponse()->setContentType('text/html');
-$this->printer = '';
-$this->setLayout('empty');
-*/    
-$this->setLayout(false);
-return 'Success';

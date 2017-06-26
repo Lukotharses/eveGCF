@@ -389,9 +389,15 @@ class ticketActions extends sfActions
           $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
           fclose($fileJson);
           uasort($jsonParam, 'comPar2');
+          
+          $size = array();
+            for ($i = 6; $i < 20; $i++) {
+                $size[$i] = $i;
+            }
           $this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
           $this->param = $jsonParam;
-          
+          $this->font = array("Arial"=>"Arial", "Lucida"=>"Lucida", "Helvetica"=>"Helvetica", "Lucida-Console"=>"Lucida Console");
+          $this->size = $size;
   }
   //goto customPrint
   public function executeCustomPrint(sfWebRequest $request)

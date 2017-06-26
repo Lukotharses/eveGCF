@@ -14,9 +14,19 @@ and open the template in the editor.
 }
 
 
+/*canvas
+.canvas-container{
+    width : 150mm;
+    height : 50mm;
+}
 
-//interact
-#drag-1, #drag-2 {
+.editor{
+    width: 150mm;
+    height: 50mm;
+}
+*/
+/*interact*/
+/*#drag-1, #drag-2 {
   width: 25%;
   height: 100%;
   min-height: 6.5em;
@@ -35,6 +45,21 @@ and open the template in the editor.
 #drag-me::before {
   content: "#" attr(id);
   font-weight: bold;
+}*/
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #section-to-print, #section-to-print * {
+    visibility: visible;
+  }
+  #section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 
 

@@ -43,6 +43,15 @@ authentication:
     column:               id
     with_wildcard_routes: true
 
+tckCustom:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                TckCustom
+    module:               tckCustom
+    prefix_path:          /tckCustom
+    column:               id
+    with_wildcard_routes: true
+
 sfGuardUser:
   class: sfDoctrineRouteCollection
   options:

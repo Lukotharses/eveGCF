@@ -14,12 +14,13 @@ and open the template in the editor.
 }
 
 
-/*canvas
-.canvas-container{
-    width : 150mm;
-    height : 50mm;
+
+.canvas-container{  
+    border:1px solid #000000;
+    margin: 0 auto;
 }
 
+/*canvas
 .editor{
     width: 150mm;
     height: 50mm;
@@ -47,6 +48,16 @@ and open the template in the editor.
   font-weight: bold;
 }*/
 
+.editor {
+  position: absolute;
+  top: 0;
+  min-height: 280px;
+  left: 500px;
+  overflow-y: scroll;
+  width: calc(100% - 1000px);
+  padding-bottom: 20px;
+  max-height: calc(100% - 800px);
+}
 
 @media print {
   body * {

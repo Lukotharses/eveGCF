@@ -18,7 +18,7 @@ class ticketActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->redirect('ticket/sell');
-  }
+  } 
   
   public function executeShow(sfWebRequest $request)
   {
@@ -410,4 +410,10 @@ class ticketActions extends sfActions
 
   }
   
+  //TESTING ONLY
+  /*
+  public function executeNew(sfWebRequest $request){
+      
+  }
+  */
 }

@@ -1,6 +1,6 @@
 <?php
 use_stylesheet('/css/customize/bootstrap-mod.min.css');
-//use_javascript('/js/customize/bootstrap.min.js');
+use_javascript('/js/customize/bootstrap.min.js');
 use_javascript('/js/customize/interact.js');
 use_javascript('/js/customize/fabric.min.js');
 //use_javascript('/js/customize/w3.js');
@@ -87,11 +87,12 @@ use_stylesheet('/css/customize/customize.css');
                         <!--                        <div class="col-md-6">-->
 
                         <div class="editor">
-                            <canvas id="tktCanvas" style="border:1px solid #000000;">
+                            <canvas id="tktCanvas">
                                 Please wait for loading.
                                 If nothing happens, kindly update your browser.
                             </canvas>
                             <button class="btn btn-success" id="serializer" type="button">serializer</button>
+                            <button class="btn btn-success" id="resizer" type="button">resizer</button>
                         </div>
                     </div>
 
@@ -124,9 +125,20 @@ use_stylesheet('/css/customize/customize.css');
     <script>
 
         var canvas = new fabric.Canvas('tktCanvas');
-        canvas.setWidth("150mm", {'cssOnly': true});
-        canvas.setHeight("50mm", {'cssOnly': true});
-        canvas.renderAll();
+        //canvas.setWidth("150mm", {'cssOnly': true});
+        //canvas.setHeight("50mm", {'cssOnly': true});
+        //canvas.renderAll();
+        canvas.setWidth("900");
+        canvas.setHeight("300");
+        //canvas.setWidth( "<desired width>" );
+        //canvas.setHeight( <desired height> );
+        //canvas.calcOffset();
+//        var styleCanvas = document.getElementsByTagName('canvas')[0];
+//        styleCanvas.style.width  = '900px';
+//        styleCanvas.style.height = '300px';
+        
+
+        
         var objectOnCanvas = [];
         var rebuildCanvas = new fabric.StaticCanvas('rebuildCanvas');
         //image adding example
@@ -200,7 +212,9 @@ use_stylesheet('/css/customize/customize.css');
         document.getElementById("serializer").onclick = function () {
             myTck = JSON.stringify(canvas);
             console.log(myTck);
+            console.log(canvas.toSVG());
             document.getElementById("reSerializer").disabled = false;
+            
         };
 
 
@@ -214,7 +228,28 @@ use_stylesheet('/css/customize/customize.css');
             );
         };
 
+        
+        //for test ! Size changer
 
+        document.getElementById("resizer").onclick = function () {
+            var sizWidth = canvas.getWidth();
+            var sizHeight = canvas.getHeight();
+            var zoom = 1
+            if (sizWidth*1.5<1000){
+                zoom = 1.5;
+            }else{
+                zoom = 0.75;
+            }
+            var styleCanvas = document.getElementsByTagName('canvas')[0];
+            //styleCanvas.style.width = sizWidth +'px';
+            //styleCanvas.style.height = sizHeight +'px';
+            canvas.setWidth(sizWidth*zoom);
+            canvas.setHeight(sizHeight*zoom);
+            canvas.setZoom(zoom);
+            canvas.getContext();
+            canvas.renderAll();
+        };
+        
         function getNameFromOption(target) {
             var name = target.attr("id");
             var index = name.lastIndexOf(".");

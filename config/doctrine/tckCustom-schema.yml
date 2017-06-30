@@ -1,0 +1,23 @@
+## YAML Template.
+TckCustom:
+  package: tckCustom
+  actAs:
+    Timestampable: ~
+  inheritance:
+    extends: Traceable
+    type: concrete
+  columns:
+    name:
+      type: string(80)
+      notnull: true
+      notblank: true
+    description: string(255)
+    manifestation_id:
+      type: integer
+      notnull: false
+    dataCustom: string
+    tckHeight : smallint
+    tckWidth : smallint
+  relations:
+    Manifestation:
+      foreignAlias: tckCustom

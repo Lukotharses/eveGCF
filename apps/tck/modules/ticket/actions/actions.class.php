@@ -403,10 +403,72 @@ class ticketActions extends sfActions
   public function executeCustomPrint(sfWebRequest $request)
   {
       
+      
   }
+  
+  //save the template
+  public function executeSubmit(sfWebRequest $request){
+      //$this->forwardUnless($query = $request->getParameter('query'), 'job', 'index');
+
+      //$this->jobs = Doctrine_Core::getTable('JobeetJob')->getForLuceneQuery($query);
+
+      if ($request->isXmlHttpRequest()) {
+//            if ('*' == $query || !$this->jobs) {
+//                return $this->renderText('No results.');
+//            }
+//
+//            return $this->renderPartial('job/list', array('jobs' => $this->jobs));
+          $manif = $request->getParameter('manifestation_id');
+          //$all = $request->extractParameters
+          $data = $request->getParameter('datacustom');
+          $tckheight = $request->getParameter('tckheight');
+          $tckwidth = $request->getParameter('tckwidth');
+          $template = Doctrine_Core::getTable('tckCustom')
+                  ->findOneByManifestationId($manif);
+          if($template==null){
+              $template=new TckCustom();
+          }else{
+              $template->version +=1;
+          }
+          $template->name = 'testing1';
+          $template->manifestation_id = $manif;
+          $template->dataCustom = $data;
+          $template->description = 'mouhahahahha';
+          $template->tckHeight = $tckheight;
+          $template->tckWidth = $tckwidth;
+          
+          $template->save();
+          
+          return $this->renderText('ticket template saved for '.$manif);
+        }
+    }
   
   //for testing purpose !!!not in prod(?)
   public function executeTesting(sfWebRequest $request){
+      
+      function comPar2($a, $b){
+              if($a['optional']==$b['optional']){
+                  return 0;
+              }
+              return ($a['optional'])?1:-1;
+          }
+          
+          //$this->form = new CustomTicketForm();
+          $fileJson = fopen(dirname(__FILE__).'/../config/ticketParam.json', 'r');
+          $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
+          fclose($fileJson);
+          //treated in the component
+          //uasort($jsonParam, 'comPar2');
+          
+          $size = array();
+            for ($i = 6; $i < 20; $i++) {
+                $size[$i] = $i;
+            }
+          // TODO USE THAT FOR GENERALISATION!!  
+          //$this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
+          $this->json = $jsonParam;
+          $this->font = array("Arial"=>"Arial", "Lucida"=>"Lucida", "Helvetica"=>"Helvetica", "Lucida-Console"=>"Lucida Console");
+          $this->size = $size;
 
   }
   

@@ -17,7 +17,7 @@ and open the template in the editor.
 
 .canvas-container{  
     border:1px solid #000000;
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 /*canvas
@@ -73,5 +73,41 @@ and open the template in the editor.
   }
 }
 
+
+.addLabelButton {
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 1px;
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+
+.addLabelButton:hover {
+    background-color: #3E8E41;
+    opacity: 0.5;
+    color: white;
+}
+
+.addLabelButton.checked {
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 1px;
+  background-color: #33AE41;;
+  color: white;
+  border: 2px solid #4CAF50;
+}
+
+.addLabelButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+body #content #more{
+    max-height: 100%;
+    overflow-x: scroll;
+    
+}
 
 

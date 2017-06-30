@@ -123,7 +123,8 @@ use_stylesheet('/css/customize/customize.css');
 
 
     <script>
-
+        
+        
         var canvas = new fabric.Canvas('tktCanvas');
         //canvas.setWidth("150mm", {'cssOnly': true});
         //canvas.setHeight("50mm", {'cssOnly': true});
@@ -136,7 +137,14 @@ use_stylesheet('/css/customize/customize.css');
 //        var styleCanvas = document.getElementsByTagName('canvas')[0];
 //        styleCanvas.style.width  = '900px';
 //        styleCanvas.style.height = '300px';
-        
+        var rect = new fabric.Rect({
+        left: 100,
+        top: 100,
+        fill: 'red',
+        width: 100,
+        height: 100
+      });
+    canvas.add(rect);
 
         
         var objectOnCanvas = [];

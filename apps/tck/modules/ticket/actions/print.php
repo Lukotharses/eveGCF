@@ -418,7 +418,8 @@
       }
       else
         $this->printer = $type;
-
+      
+      
       return 'Direct';
     }
 

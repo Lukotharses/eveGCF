@@ -28,7 +28,7 @@ $transaction = $sf_data->getRaw('transaction');
 </ul>
   
 
-<div id="sf_fieldset_mandatory" class="ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+<div id="sf_fieldset_mandatory" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
     foreach ($mandat as $value) {
@@ -40,7 +40,7 @@ $transaction = $sf_data->getRaw('transaction');
     
 </div>
 
-<div id="sf_fieldset_ticket" class="ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+<div id="sf_fieldset_ticket" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
     foreach ($others as $value) {
@@ -52,7 +52,7 @@ $transaction = $sf_data->getRaw('transaction');
     
 </div>
 
-<div id="sf_fieldset_manifestation" class="ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+<div id="sf_fieldset_manifestation" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
     foreach ($manif as $value) {
@@ -64,7 +64,7 @@ $transaction = $sf_data->getRaw('transaction');
     
 </div>
 
-<div id="sf_fieldset_transaction" class="ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+<div id="sf_fieldset_transaction" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
     foreach ($transaction as $value) {
@@ -76,7 +76,7 @@ $transaction = $sf_data->getRaw('transaction');
     
 </div>
 
-<div id="sf_fieldset_gauge" class="ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+<div id="sf_fieldset_gauge" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
     foreach ($gauge as $value) {

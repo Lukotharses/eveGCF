@@ -423,3 +423,259 @@ rebuildCanvas.loadFromJSON(myTck, function() { rebuildCanvas.renderAll(); },func
 
 </script>
 <script type="text/javascript" src="/js/print-tickets.js"></script>
+
+
+
+//back text control
+<div class ="canControls">
+            <div id="text-controls">
+            <p>Select an object on the template to activate controls below</p>
+            <textarea rows="3" columns="80"></textarea><br>
+            <label for="font-family" style="display:inline-block">Font type:</label>
+            <select id="font-family" class="btn-object-choice">
+              <option value="arial">Arial</option>
+              <option value="arial narrow">Arial Narrow</option>
+              <option value="helvetica" selected="">Helvetica</option>
+              <option value="verdana">Verdana</option>
+              <option value="georgia">Georgia</option>
+              <option value="courier">Courier</option>
+              <option value="impact">Impact</option>
+            </select>
+            <br>
+            <label for="text-align" style="display:inline-block">Text align:</label>
+            <select id="text-align" class="btn-object-action">
+              <option value="Left">Left</option>
+              <option value="Center">Center</option>
+              <option value="Right">Right</option>
+              <option value="Justify">Justify</option>
+            </select>
+            <div>
+              <label for="text-font-size">Font size:</label>
+              <input value="" min="6" max="120" step="1" id="text-font-size" class="btn-object-action" bind-value-to="fontSize" type="range">
+            </div>
+            <div>
+              <label for="text-line-height">Line height:</label>
+              <input value="" min="1" max="5" step="0.1" id="text-line-height" class="btn-object-action" bind-value-to="lineHeight" type="range">
+            </div>
+            <div>
+              <label for="text-char-spacing">Char spacing:</label>
+              <input value="" min="-200" max="800" step="10" id="text-char-spacing" class="btn-object-action" bind-value-to="charSpacing" type="range">
+            </div>
+            <button type="button" class="btn-object-action" id="text-cmd-italic" onclick="toggleBold()">
+              Bold
+            </button>
+            <button type="button" class="btn-object-action" id="text-cmd-italic" onclick="toggleItalic()">
+              Italic
+            </button>
+            <button type="button" class="btn-object-action" id="text-cmd-underline" onclick="toggleUnderline()">
+              Underline
+            </button>
+            <button type="button" class="btn-object-action" id="text-cmd-linethrough" onclick="toggleLinethrough()">
+              Linethrough
+            </button>
+            <button type="button" class="btn-object-action" id="text-cmd-overline" onclick="toggleOverline()">
+              Overline
+            </button>
+          </div>
+        </div>
+
+
+
+// functions to check overlap etc
+//stackoverflow IS BAD BAD
+//	// Don't allow objects off the canvas
+//	if(targ.getLeft() < snap) {
+//		targ.setLeft(0);
+//	}
+//
+//	if(targ.getTop() < snap) {
+//		targ.setTop(0);
+//	}
+//
+//	if((targ.getWidth() + targ.getLeft()) > (canvasWidth - snap)) {
+//		targ.setLeft(canvasWidth - targ.getWidth());
+//	}
+//
+//	if((targ.getHeight() + targ.getTop()) > (canvasHeight - snap)) {
+//		targ.setTop(canvasHeight - targ.getHeight());
+//	}
+//    
+//    
+//        canvas.forEachObject(function (obj) {
+//            if (obj === targ) return;
+//
+//            // If objects intersect
+//            if (targ.intersectsWithObject(obj)) {
+//
+//                var distX = ((obj.getLeft() + obj.getWidth()) / 2) - ((targ.getLeft() + targ.getWidth()) / 2);
+//                var distY = ((obj.getTop() + obj.getHeight()) / 2) - ((targ.getTop() + targ.getHeight()) / 2);
+//
+//                // Set new position
+//                findNewPos(distX, distY, targ, obj);
+//                
+//            }
+//            
+//            
+//            });
+//        
+//        targ.setCoords();
+//
+//	// If objects still overlap
+//
+//	var outerAreaLeft = null,
+//        outerAreaTop = null,
+//        outerAreaRight = null,
+//        outerAreaBottom = null;
+//
+//	canvas.forEachObject(function (obj) {
+//		if (obj === targ) return;
+//
+//		if (targ.isContainedWithinObject(obj) || targ.intersectsWithObject(obj) || obj.isContainedWithinObject(targ)) {
+//
+//			var intersectLeft = null,
+//			intersectTop = null,
+//			intersectWidth = null,
+//			intersectHeight = null,
+//			intersectSize = null,
+//			targetLeft = targ.getLeft(),
+//			targetRight = targetLeft + targ.getWidth(),
+//			targetTop = targ.getTop(),
+//			targetBottom = targetTop + targ.getHeight(),
+//			objectLeft = obj.getLeft(),
+//			objectRight = objectLeft + obj.getWidth(),
+//			objectTop = obj.getTop(),
+//			objectBottom = objectTop + obj.getHeight();
+//
+//			// Find intersect information for X axis
+//			if(targetLeft >= objectLeft && targetLeft <= objectRight) {
+//				intersectLeft = targetLeft;
+//				intersectWidth = obj.getWidth() - (intersectLeft - objectLeft);
+//
+//			} else if(objectLeft >= targetLeft && objectLeft <= targetRight) {
+//				intersectLeft = objectLeft;
+//				intersectWidth = targ.getWidth() - (intersectLeft - targetLeft);
+//			}
+//
+//			// Find intersect information for Y axis
+//			if(targetTop >= objectTop && targetTop <= objectBottom) {
+//				intersectTop = targetTop;
+//				intersectHeight = obj.getHeight() - (intersectTop - objectTop);
+//
+//			} else if(objectTop >= targetTop && objectTop <= targetBottom) {
+//				intersectTop = objectTop;
+//				intersectHeight = targ.getHeight() - (intersectTop - targetTop);
+//			}
+//
+//			// Find intersect size (this will be 0 if objects are touching but not overlapping)
+//			if(intersectWidth > 0 && intersectHeight > 0) {
+//				intersectSize = intersectWidth * intersectHeight;
+//			}
+//
+//			// Set outer snapping area
+//			if(obj.getLeft() < outerAreaLeft || outerAreaLeft == null) {
+//				outerAreaLeft = obj.getLeft();
+//			}
+//
+//			if(obj.getTop() < outerAreaTop || outerAreaTop == null) {
+//				outerAreaTop = obj.getTop();
+//			}
+//
+//			if((obj.getLeft() + obj.getWidth()) > outerAreaRight || outerAreaRight == null) {
+//				outerAreaRight = obj.getLeft() + obj.getWidth();
+//			}
+//
+//			if((obj.getTop() + obj.getHeight()) > outerAreaBottom || outerAreaBottom == null) {
+//				outerAreaBottom = obj.getTop() + obj.getHeight();
+//			}
+//
+//			// If objects are intersecting, reposition outside all shapes which touch
+//			if(intersectSize) {
+//				var distX = (outerAreaRight / 2) - ((targ.getLeft() + targ.getWidth()) / 2);
+//				var distY = (outerAreaBottom / 2) - ((targ.getTop() + targ.getHeight()) / 2);
+//
+//				// Set new position
+//				findNewPos(distX, distY, targ, obj);
+//			}
+//		}
+//        
+//	});
+//        
+
+        
+//		
+// 
+    
+    
+    //var mouse_pos = { x: 0, y: 0 };
+//    canvas.on('mouse:move', function(options) {
+//            mouse_pos = canvas.getPointer(options.e);
+//            console.log(mouse_pos.x);
+//        });
+    
+//    canvas.on('mouse:up', function(event){
+//        console.log(event.target);
+//        canvas.trigger('object:moving', event);
+//    });
+
+
+   
+//    canvas.on('object:moving', function(e){
+//        var targ = e.target;
+//        //targ.setCoords();
+//        var top = targ.getTop(), left = targ.getLeft();
+//        console.log("top: "+top+" left: "+left+" "+targ.get);
+//        targ.setCoords();
+//        console.log(targ.isOnScreen(true));
+//        if (!targ.isOnScreen(true)){
+//            targ.setTop(top);
+//            targ.setLeft(left);
+//        }
+//    });
+//    
+//    function stopDragging(element) {
+//    element.lockMovementX = true;
+//    element.lockMovementY = true;
+//    }
+//    
+//    var upperCanvas = canvas.getSelectionElement();
+//    $(upperCanvas).on('mouseout', function(e) {
+//        stopDragging(e.target);
+//    });
+    
+//    canvas.on('mouse:out', function(event){
+//          console.log(event.target);
+//          canvas.fire('mouse:up', event);
+//          canvas.trigger('object:modified',{target : canvas.getActiveObject()});
+//          canvas.trigger('object:mouseup', {target : canvas.getActiveObject()});
+//        var selected = canvas.getActiveObject();
+//        trigger('mouse:down', event);
+//        if (selected){
+//            canvas.setActiveObject(selected);
+//        }
+//    });
+
+//
+//    function findNewPos(distX, distY, target, obj) {
+//	// See whether to focus on X or Y axis
+//	if(Math.abs(distX) > Math.abs(distY)) {
+//		if (distX > 0) {
+//			target.setLeft(obj.getLeft() - target.getWidth());
+//		} else {
+//			target.setLeft(obj.getLeft() + obj.getWidth());
+//		}
+//	} else {
+//		if (distY > 0) {
+//			target.setTop(obj.getTop() - target.getHeight());
+//		} else {
+//			target.setTop(obj.getTop() + obj.getHeight());
+//		}
+//	}
+//}
+//
+//    
+//    var snap = 1; //pixels to snap
+//    var canvasWidth = canvas.getWidth();
+//    var canvasHeight = canvas.getHeight();
+//    
+//
+// 

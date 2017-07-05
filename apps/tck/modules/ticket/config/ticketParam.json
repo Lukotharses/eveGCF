@@ -20,7 +20,7 @@
         "displayed": true
     },
     "value": {
-        "optional": true,
+        "optional": false,
         "displayed": true
     },
     "manifestation_id": {

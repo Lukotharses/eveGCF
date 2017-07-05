@@ -10,7 +10,8 @@ and open the template in the editor.
 
 .scrolled{
     overflow: auto;
-    height: 450px;
+    height: 300px;
+    width: 65%;
 }
 
 
@@ -109,5 +110,28 @@ body #content #more{
     overflow-x: scroll;
     
 }
+
+#canControls{
+    float: left;
+    margin-left: 10px;
+}
+
+.canvas  {
+    float: left;
+}
+
+#canControls.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.btn-object-action.true{
+    background-color: #000000;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 6px 23px 6px 23px;
+}
+
+
 
 

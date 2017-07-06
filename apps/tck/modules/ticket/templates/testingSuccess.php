@@ -9,23 +9,29 @@
 
 
 <div id="more">
-    <div class="buttonGroup">
-        <div class="printTest" disabled>
+    
+    <div class="buttonGroup" width="100%">
             <button class="fg-button ui-state-default" id="print" type="button" disabled>test print</button>
-        </div>  
-        <div class="">
-            <form method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
-                <button class="fg-button ui-state-default " id="serializer" type="button">serializer</button>
-                <button class="fg-button ui-state-default " id="save" type="button" hidden="true">save</button>
-                <input type="number" name="manifestation_id" hidden>
-                <input type="text" name="datacustom" hidden>
-                <input type="text" name="description" hidden>
-                <input type="number" name="ticketheight" hidden>
-                <input type="number" name="ticketwidth" hidden>
-            </form>
-        </div>
+            <button class="fg-button ui-state-default " id="serializer" type="button">serializer</button>
+<!--            TODO-->
+<!--            <button class="fg-button ui-state-default" id="reset" display="inline-block;">reset</bouton>-->
+    </div>
+    <div class="">
+        <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
+
+            <button class="fg-button ui-state-default " id="save" type="button" hidden="true">save</button>
+            <input type="number" name="event_id" value="43" hidden>
+            <input type="text" name="datacustom" hidden>
+            <input type="text" name="description" hidden>
+            <input type="number" name="ticketHeight" value="50" hidden>
+            <input type="number" name="ticketWidth" value="150" hidden>
+        </form>
     </div>
 
+
+    <div id="flashCanvas" class="sf_admin_flashes ui-widget">
+        <h3 id="flashCanvasText" style="color: red;"></h3>
+    </div>
     <div class="canvas">
         <canvas id="tktCanvas" width="1200px" height="400px">
 
@@ -128,6 +134,9 @@
 
 
 <script type="text/javascript">
+    
+    
+    
     var canvas = new fabric.Canvas('tktCanvas');
     canvas.setBackgroundColor('white');
     var TckLabel = fabric.util.createClass(fabric.Text, {
@@ -169,17 +178,39 @@
 
     function addText2Canvas(target)
     {
+        $('#flashCanvasText').text('');
         var targetLabel = target.attr("value");
         var targetName = target.attr("id");
         var lefty = fabric.util.getRandomInt(0, canvas.width);
         var topty = fabric.util.getRandomInt(0, canvas.height);
         var targetFontType = "Arial";
-        var targetFontSize = 24;
+        var targetFontSize = 20;
         var text2add = new TckLabel(targetLabel, {fontFamily: targetFontType, fontSize: targetFontSize, left: lefty, top: topty, name: targetName});
         canvas.add(text2add);
+        var counter =0;
+        while(isOutOfCanvas(text2add) || isIntersecting(text2add)){
+            text2add.setLeft(fabric.util.getRandomInt(0, canvas.width));
+            text2add.setTop(fabric.util.getRandomInt(0, canvas.height));
+            text2add.setCoords();
+            counter +=1;
+            if (counter>1500){
+                changeState(target);
+                $('#flashCanvasText').text('Element impossible to add, please make room');
+                break;
+            }
+            
+        }
+        fabric.util.animateColor('#FFF700', '#eee', 500, {
+            onChange: function(val) {
+            text2add.set('backgroundColor', val);
+            canvas.renderAll();
+          }
+        });
+        console.log(text2add);
+        //canvas.renderAll();
     }
 
-
+    //called on document load
     function checkedEvent() {
         $('.addLabelButton.checked').each(function () {
             addText2Canvas($(this));
@@ -226,15 +257,29 @@
         //events
     canvas.on('object:selected', selectHandler);
     canvas.on('selection:cleared', deselectHandler);
- 
-    function isIntersecting(targ){
+       //overlap and canas bounding
+       
+    function isOutOfCanvas(target){
+        if((target.getLeft() < snap) 
+                    || (target.getTop() < snap) 
+                    || (target.getWidth() + target.getLeft() > (canvasWidth - snap))
+                    || (target.getHeight() + target.getTop() > (canvasHeight - snap)))
+            {
+                return true;
+            }else{
+                return false;
+            }
+            
+    }
+    
+    function isIntersecting(target){
         var allObj = canvas.getObjects();
         var isIt = false;
         for (ind in allObj){
-            if (allObj[ind]===targ){
+            if (allObj[ind]===target){
                 continue;
             }else{
-                if (targ.intersectsWithObject(allObj[ind])){
+                if (target.intersectsWithObject(allObj[ind])){
                     isIt = true;
                     break;
                 }
@@ -242,11 +287,11 @@
         }
         return isIt;
     }
-        //overlap and canas bounding
+    
     var goodTop, goodLeft;
     var canvasWidth = canvas.getWidth(),
             canvasHeight = canvas.getHeight();
-    var snap = -1;
+    var snap = -2;
     
     canvas.on('object:mousedown', function(event){
         if (event.target){
@@ -256,23 +301,30 @@
         };
     });
     
+    canvas.on('mouse:up', function(event){
+        if (event.target){
+            setActiveProp('backgroundColor','');
+        };
+    });
+    
     canvas.on('object:moving', function (event) {
+        var bgColor = false;
         var targ = event.target;
         var lastTop = targ.getTop(),
             lastLeft = targ.getLeft();
         targ.setCoords();        
-        if((targ.getLeft() < snap) 
-                    || (targ.getTop() < snap) 
-                    || (targ.getWidth() + targ.getLeft() > (canvasWidth - snap))
-                    || (targ.getHeight() + targ.getTop() > (canvasHeight - snap))
+        if(isOutOfCanvas(targ)
                     || (isIntersecting(targ))){
                 targ.setLeft(goodLeft);
                 targ.setTop(goodTop);
+                bgColor= true;
         }else{
             goodLeft = lastLeft;
             goodTop = lastTop;
+            $('#flashCanvasTxt').val("");
+            bgColor = false;
         }
-       
+        setActiveProp('backgroundColor',bgColor?'red':'');
     });
 
             //functions
@@ -341,29 +393,14 @@
         canvas.renderAll();
     }   
 
-    //text controls
-/* generic function is working, 2B removed
-    function isBold(item){
-        $(item).hasClass("true")
-    }
-    
-    function toggleBold(item) {
-        $(item).toggleClass("true");
-        if ($(item).hasClass("true")) {
-            canvas.getActiveObject().set("fontWeight", "bold");
-        } else {
-            canvas.getActiveObject().set("fontWeight", "normal");
-        }
-        canvas.renderAll();
-    }
-*/
     
     //first remove all other js event
-    
     $("#more").off("click");
     $("#more").off("blur");
     $("#more").off("focus");
-    //check and put the mandatory elements
+    //TODO check interest...
+    
+    //check and put on template the mandatory elements, bind the others to an event
     $(document).on("load", checkedEvent());
 
     //save ticket to base
@@ -374,14 +411,12 @@
         document.getElementById("print").disabled = false;
         $('#flash').load(
                 $(this).parents('form').attr('action'),
-                {manifestation_id: 42, datacustom: myTck, ticketheight: 1, ticketwidth: 3}
-        //function() { $('#loader').hide(); }
+                {event_id: $('input[name=event_id]').val(), datacustom: myTck, ticketheight: $('input[name=ticketHeight]').val(), ticketwidth: $('input[name=ticketWidth]').val()}
+
         );
-
-
     };
     
-    //button click
+    //button for canvas click
     $(".btn-object-action").on('click', function(event){
         toggleAction(event.target);
     });
@@ -396,5 +431,6 @@
     document.getElementById("print").onclick = function () {
         console.log("printing !!!");
     };
-
+    
+    
 </script>

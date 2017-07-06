@@ -678,4 +678,23 @@ rebuildCanvas.loadFromJSON(myTck, function() { rebuildCanvas.renderAll(); },func
 //    var canvasHeight = canvas.getHeight();
 //    
 //
+
 // 
+
+
+    //text controls
+/* generic function is working, 2B removed
+    function isBold(item){
+        $(item).hasClass("true")
+    }
+    
+    function toggleBold(item) {
+        $(item).toggleClass("true");
+        if ($(item).hasClass("true")) {
+            canvas.getActiveObject().set("fontWeight", "bold");
+        } else {
+            canvas.getActiveObject().set("fontWeight", "normal");
+        }
+        canvas.renderAll();
+    }
+*/ 

@@ -418,20 +418,20 @@ class ticketActions extends sfActions
 //            }
 //
 //            return $this->renderPartial('job/list', array('jobs' => $this->jobs));
-          $manif = $request->getParameter('manifestation_id');
+          $event = $request->getParameter('event_id');
           //$all = $request->extractParameters
           $data = $request->getParameter('datacustom');
           $tckheight = $request->getParameter('tckheight');
           $tckwidth = $request->getParameter('tckwidth');
           $template = Doctrine_Core::getTable('tckCustom')
-                  ->findOneByManifestationId($manif);
+                  ->findOneByEventId($event);
           if($template==null){
               $template=new TckCustom();
           }else{
               $template->version +=1;
           }
           $template->name = 'testing1';
-          $template->manifestation_id = $manif;
+          $template->event_id = $event;
           $template->dataCustom = $data;
           $template->description = 'mouhahahahha';
           $template->tckHeight = $tckheight;
@@ -439,7 +439,7 @@ class ticketActions extends sfActions
           
           $template->save();
           
-          return $this->renderText('ticket template saved for '.$manif);
+          return $this->renderText('ticket template saved for '.$event);
         }
     }
   

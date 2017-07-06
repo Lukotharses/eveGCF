@@ -12,12 +12,12 @@ TckCustom:
       notnull: true
       notblank: true
     description: string(255)
-    manifestation_id:
+    event_id:
       type: integer
       notnull: false
     dataCustom: string
     tckHeight : smallint
     tckWidth : smallint
   relations:
-    Manifestation:
+    Event:
       foreignAlias: tckCustom

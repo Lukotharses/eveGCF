@@ -80,10 +80,11 @@
     $fingerprint = NULL;
     $this->print_again = false;
     $this->grouped_tickets = false;
+ 
     $this->duplicate = $request->getParameter('duplicate') == 'true' && $this->getUser()->hasCredential('tck-duplicate-ticket');
     $this->tickets = array();
     $update = array('printed_at' => array(), 'integrated_at' => array());
-
+   
     // grouped tickets
     if ( sfConfig::get('app_tickets_authorize_grouped_tickets', false)
       && $request->hasParameter('grouped_tickets') )
@@ -374,12 +375,17 @@
       'duplicate'   => $this->duplicate,
       'user'        => $this->getUser(),
     )));
-
+    
     if ( $request->hasParameter('direct') )
     {
       if($request->hasParameter('json')) {
         echo json_encode($this->transaction->Tickets->toArray());
         return sfView::NONE;
+      }
+      
+      if($request->hasParameter('custom')){
+          var_dump($this->transaction->Tickets);
+          return sfView::NONE;
       }
       
       if ( count($this->tickets) <= 0 )

@@ -147,10 +147,23 @@
             this.set('hasRotatingPoint', false);
             this.set('lockRotation', true);
             this.set('fontFamily', 'arial');
+            this.set('id', options.name);
         },
         toObject: function () {
-            return fabric.util.object.extend(this.callSuper('toObject'), {name: this.name});
+            var mustachText = '{{'+this.get('id')+'}}';
+            console.log(mustachText);
+            var svgClone = fabric.util.object.clone(this);
+            svgClone.set('text',mustachText);
+            return fabric.util.object.extend(svgClone.callSuper('toObject'), {name: this.name});
+        },
+        toSVG: function () {
+            var mustachText = '{{'+this.get('id')+'}}';
+            console.log(mustachText);
+            var svgClone = fabric.util.object.clone(this);
+            svgClone.set('text',mustachText);
+            return fabric.util.object.extend(svgClone.callSuper('toSVG'));
         }
+        
     });
 
 
@@ -204,9 +217,11 @@
             onChange: function(val) {
             text2add.set('backgroundColor', val);
             canvas.renderAll();
-          }
+          },
+          onComplete: function(){
+              text2add.set('backgroundColor', '');}
         });
-        console.log(text2add);
+        //console.log(text2add);
         //canvas.renderAll();
     }
 
@@ -405,12 +420,14 @@
 
     //save ticket to base
     document.getElementById("serializer").onclick = function () {
-        myTck = JSON.stringify(canvas);
-        console.log(myTck);
+        //myTck = JSON.stringify(canvas);
+        //console.log(myTck);
+        var myTck = canvas.toSVG();
+        console.log(canvas.toObject());
         console.log(canvas.toSVG());
         document.getElementById("print").disabled = false;
         $('#flash').load(
-                $(this).parents('form').attr('action'),
+                $('#tckTemplate').attr('action'),
                 {event_id: $('input[name=event_id]').val(), datacustom: myTck, ticketheight: $('input[name=ticketHeight]').val(), ticketwidth: $('input[name=ticketWidth]').val()}
 
         );

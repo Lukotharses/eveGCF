@@ -30,12 +30,19 @@
 ?>
 <?php
   // getting the HTML representing the tickets
-  foreach ( $tickets as $ticket )
-    $html .= get_partial('ticket_html',array(
+  foreach ( $tickets as $ticket ){
+    $templTck = 'ticket_html';
+    if(Doctrine_Core::getTable('tckCustom')
+                  ->findOneByEventId($ticket->Manifestation->Event->id)){
+        $templTck = 'templatedTicket_html';
+    }
+        
+    $html .= get_partial($templTck,array(
       'ticket' => isset($ticket['ticket']) ? $ticket['ticket'] : $ticket,
       'nb' => isset($ticket['nb']) ? $ticket['nb'] : 1,
       'duplicate' => $duplicate))
     ;
+  }
 ?>
 <?php
   $options = array_merge(

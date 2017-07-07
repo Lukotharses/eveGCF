@@ -385,7 +385,7 @@ class ticketActions extends sfActions
           }
           
           //$this->form = new CustomTicketForm();
-          $fileJson = fopen(dirname(__FILE__).'/../config/ticketParam.json', 'r');
+          $fileJson = fopen(__DIR__.'/../config/ticketParam.json', 'r');
           $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
           fclose($fileJson);
           uasort($jsonParam, 'comPar2');
@@ -402,7 +402,7 @@ class ticketActions extends sfActions
   //goto customPrint
   public function executeCustomPrint(sfWebRequest $request)
   {
-      
+      require('customPrint.php');
       
   }
   
@@ -430,7 +430,7 @@ class ticketActions extends sfActions
           }else{
               $template->version +=1;
           }
-          $template->name = 'testing1';
+          $template->name = 'testing';
           $template->event_id = $event;
           $template->dataCustom = $data;
           $template->description = 'mouhahahahha';
@@ -454,8 +454,8 @@ class ticketActions extends sfActions
           }
           
           //$this->form = new CustomTicketForm();
-          $fileJson = fopen(dirname(__FILE__).'/../config/ticketParam.json', 'r');
-          $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
+          $fileJson = fopen(__DIR__.'/../config/ticketParam.json', 'r');
+          $jsonParam = json_decode(fread($fileJson,filesize(__DIR__.'/../config/ticketParam.json')), TRUE);
           fclose($fileJson);
           //treated in the component
           //uasort($jsonParam, 'comPar2');
@@ -466,6 +466,10 @@ class ticketActions extends sfActions
             }
           // TODO USE THAT FOR GENERALISATION!!  
           //$this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
+          
+          //should come from the menu
+          $this->eventId = 43;
+          $this->event = null;
           $this->json = $jsonParam;
           $this->font = array("Arial"=>"Arial", "Lucida"=>"Lucida", "Helvetica"=>"Helvetica", "Lucida-Console"=>"Lucida Console");
           $this->size = $size;

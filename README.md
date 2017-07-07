@@ -18,3 +18,9 @@ lib/form/CustomTicketForm.class.php
 web/css/customize/* (with handlerbars, not mandatory)
 web/customize/*
 web/js/customize/*
+
+./symfony doctrine:create-model-tables --application="tck" tckCustom
+./symfony doctrine build:sql
+./symfony doctrine build:insert-sql
+
+

@@ -82,10 +82,10 @@
                 <button type="button" class="btn-object-action" id="text-cmd-underline" data-property="textDecoration" data-value="underline">
                     Underline
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through">
+                <button type="button" class="btn-object-action" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>
                     Linethrough
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-overline" data-property="textDecoration" data-value="overline">
+                <button type="button" class="btn-object-action" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>
                     Overline
                 </button>
             </div>

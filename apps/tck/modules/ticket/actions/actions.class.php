@@ -476,6 +476,19 @@ class ticketActions extends sfActions
 
   }
   
+  public function executeCustomizeMenu(sfWebRequest $request){
+      
+    $q = Doctrine::getTable('Event')
+    ->createQuery('e')
+    ->orderBy('translation.name')
+    ->limit($request->getParameter('limit'))
+    ->andWhereIn('e.meta_event_id',array_keys($this->getUser()->getMetaEventsCredentials()));
+    
+    $this->events = array();
+    foreach ( $q->execute() as $event )
+      $this->events[] = [$event->id => $request->hasParameter('with_meta_event') ? $event.' ('.$event->MetaEvent.')' : (string)$event];
+      
+  }
   //TESTING ONLY
   /*
   public function executeNew(sfWebRequest $request){

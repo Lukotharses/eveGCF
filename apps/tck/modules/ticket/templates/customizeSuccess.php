@@ -1,333 +1,513 @@
-<?php
-use_stylesheet('/css/customize/bootstrap-mod.min.css');
-use_javascript('/js/customize/bootstrap.min.js');
-use_javascript('/js/customize/interact.js');
-use_javascript('/js/customize/fabric.min.js');
-//use_javascript('/js/customize/w3.js');
-use_javascript('/js/customize/customFunc.js');
-use_javascript('/js/customize/handlebars-v4.0.10.js');
-use_javascript('/js/customize/jquery-1.11.2.js');
-use_stylesheet('/css/customize/customize.css');
-?>
-<?php use_helper('I18N') ?>
-<div class="bootstrap">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4">
-                <div id="menu-tkt" class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h2 class="panel-title" title="title-menu-tkt">Modification du billet</h2>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="list-group">
-                            <h4>Elements imposés</h4>
-                            <?php
-                            $breaker = true;
-                            foreach ($param as $key => $value) {
-                                if ($breaker && $value['optional']) {
-                                    echo '<hr><h4>Elements optionnels </h4>';
-                                    echo '<div class="scrolled">';
-                                    $breaker = false;
-                                }
-                                echo '<li class="list-group-item">';
-                                echo '<form class="form-inline">';
-                                echo '<div class="row">';
-                                //TODO ? put style in css
-                                //$hasSuccess = ($value['optional'])?'':'has-success'; // in jquery
-                                echo '<div class="input-group col-md-5">';
-                                echo '<input type="text" class="form-control" title="' . $key . '" name="' . $key . '"  value="' . $key . '" disabled>';
-                                echo ' <span class="input-group-addon">';
-                                // not a option ?
-                                if (!$value['optional']) {
-                                    echo '<input class ="addLabelBox" type="checkbox" id="' . $key . '" checked disabled>';
-                                    // optional but to display ?
-                                } else if ($value['displayed']) {
-                                    echo '<input class ="addLabelBox" type="checkbox" id="' . $key . '">';
-                                    // throw away the rest
-                                } else
-                                    continue;
-                                //go on with the options
-                                //echo '</span>';
-                                echo '</span>';
-                                echo '</div>';
-                                echo '<select id="' . $key . '.font" class="form-control fontSelection" title="Please choose a font" disabled>';
-                                foreach ($font as $k => $v) {
-                                    echo '<option value="' . $k . '">' . $v . '</option>';
-                                }
-                                echo '</select>';
-                                echo '<select id="' . $key . '.size" class="form-control sizeSelection" title="Please choose a font size" disabled>';
-                                foreach ($size as $k => $v) {
-                                    echo '<option value="' . $k . '">' . $v . '</option>';
-                                }
-                                echo '</select>';
-                                echo '</div>';
+<?php // use_stylesheet('/css/default.css');  ?>
+<?php use_stylesheet('/css/event.css'); ?>
+<?php // use_stylesheet('/css/manifestation.css');  ?>
+<?php use_stylesheet('/css/view.css'); ?>
+<?php use_javascript('/sfAdminThemejRollerPlugin/js/jquery-ui.custom.min.js'); ?>
+<?php use_stylesheet('/css/customize/customize.css') ?>
+<?php use_javascript('/js/customize/fabric.js') ?>
 
-                                //echo '</div>';
-                                echo '</form>';
-                                echo '</li>';
-                            }
-                            echo '</ul>';
-                            ?>
-                            <li class="list-group-item"><input type="submit" /></li>
-                        </ul>
-                    </div>
+
+
+<div id="more">
+    
+    <div class="buttonGroup ui-state-default" width="100%">
+            <button class="fg-button ui-state-default" id="print" type="button">test print</button>
+            <button class="fg-button ui-state-default" id="serializer" type="button">save template</button>
+            <button class="fg-button ui-state-default" id="back" type="button">back</button>
+<!--            TODO-->
+<!--            <button class="fg-button ui-state-default" id="reset" display="inline-block;">reset</bouton>-->
+    </div>
+    <div class="">
+        <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
+
+            <button class="fg-button ui-state-default " id="save" type="button" hidden="true">save</button>
+            <input type="number" name="event_id" value="43" hidden>
+            <input type="text" name="datacustom" hidden>
+            <input type="text" name="description" hidden>
+            <input type="number" name="ticketHeight" value="50" hidden>
+            <input type="number" name="ticketWidth" value="150" hidden>
+        </form>
+    </div>
+    <div class="canvas">
+        <canvas id="tktCanvas" width="1200px" height="400px">
+
+        </canvas>
+    </div>
+    <div class ="objectControl">
+
+        <div id="canControls">
+            
+            <p>Select an object on the template to activate controls below</p>
+            
+            <div id="text-controls">
+                <button type="button" class="btn-object-remove" id="object-remove">
+                    Remove
+                </button>
+                <span id='flashCanvas' style="color: red; display: none;"></span>
+                <textarea rows="3" columns="80" hidden></textarea><br>
+                <label for="font-family" style="display:inline-block">Font type:</label>
+                <select id="font-family" class="slct-object-action" data-property="fontFamily">
+                    <option value="arial">Arial</option>
+                    <option value="arial narrow">Arial Narrow</option>
+                    <option value="times new roman">Times NR</option>
+                    <option value="helvetica" selected="">Helvetica</option>
+                    <option value="verdana">Verdana</option>
+                    <option value="courier">Courier</option>
+                    <option value="impact">Impact</option>
+                </select>
+                <br>
+                <label for="text-align" style="display:none" >Text align:</label>
+                <select id="text-align" class="slct-object-action" data-property="textAlign" hidden>
+                    <option value="Left">Left</option>
+                    <option value="Center">Center</option>
+                    <option value="Right">Right</option>
+                    <option value="Justify">Justify</option>
+                </select>
+                <div>
+                    <label for="text-font-size">Font size:</label>
+                    <input value="" min="6" max="120" step="1" id="text-font-size" class="sldr-object-action" data-property="fontSize" type="range">
+                </div>
+                <div>
+                    <label for="text-line-height" style="display:none">Line height:</label>
+                    <input value="" min="1" max="5" step="0.1" id="text-line-height" class="sldr-object-action" data-property="lineHeight" type="range" hidden>
+                </div>
+                <div>
+                    <label for="text-char-spacing">Char spacing:</label>
+                    <input value="" min="-100" max="800" step="10" id="text-char-spacing" class="sldr-object-action" data-property="charSpacing" type="range">
+                </div>
+                <button type="button" class="btn-object-action" id="text-cmd-bold" data-property="fontWeight" data-value="bold">
+                    Bold
+                </button>
+                <button type="button" class="btn-object-action" id="text-cmd-italic" data-property="fontStyle" data-value="italic">
+                    Italic
+                </button>
+                <button type="button" class="btn-object-action" id="text-cmd-underline" data-property="textDecoration" data-value="underline">
+                    Underline
+                </button>
+                <button type="button" class="btn-object-action" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>
+                    Linethrough
+                </button>
+                <button type="button" class="btn-object-action" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>
+                    Overline
+                </button>
+            </div>
+        </div>
+        
+    </div>
+   
+
+</div>
+<div id="sf_admin_container" class="sf_admin_edit ui-widget ui-widget-content ui-corner-all">
+    <div class="fg-toolbar ui-widget-header ui-corner-all">
+        <h1>Text to add</h1>
+
+    </div>
+    <div id="flash" class="sf_admin_flashes ui-widget">
+
+    </div>
+    <div id="sf_admin_header">
+        To add an element on the template : Choose a category then click on a name.
+    </div>
+
+    <div id="sf_admin_content">
+
+        <div class="sf_admin_form">
+            <form method="post" autocomplete="off" action="" enctype="multipart/form-data">
+
+
+                <div class="ui-helper-clearfix"></div>
+
+
+                <div id="sf_admin_form_tab_menu" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix">
+                    <?php include_component('ticket', 'customTckMenu', array('json' => $json)) ?>
 
                 </div>
 
-            </div>
-
-
-            <div class="col-md-8">
-                <div id="preview-tkt" class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h2 class="panel-title" title="title-preview-tkt">Prévisualisation</h2>
-
-                    </div>
-                    <div class="panel-body">
-                        <!--                        <div class="col-md-6">-->
-
-                        <div class="editor">
-                            <canvas id="tktCanvas">
-                                Please wait for loading.
-                                If nothing happens, kindly update your browser.
-                            </canvas>
-                            <button class="btn btn-success" id="serializer" type="button">serializer</button>
-                            <button class="btn btn-success" id="resizer" type="button">resizer</button>
-                        </div>
-                    </div>
-
-                    <!--                        </div>-->
-                    <!--                        <div class="col-md-6">-->
-                    <div class="panel-footer">For debug only
-                        <div id="section-to-print">
-                            <canvas id="rebuildCanvas" style="border:1px solid #000000;" width="400" height="300">
-                                come again !
-                            </canvas>
-                        </div>
-                        <button class="btn btn-success" id="reSerializer" type="button" disabled>rebuild</button>
-                        <!--                        </div>-->
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <! Please erase when done >
-    <div id="testing">
-
+    <div id="sf_admin_footer">
+        The current templating mode is delivered as is. The final user stays responsable of creating a template that respects the laws and regulations concerning his use of tickets.
+        Moreover, if the user edits this application's code in any way, it will set free the editor of all legal implications.
+        We strongly encourage you to test a template before using it, and to refer to your supplier or any professional in case of doubt.
     </div>
+</div>
 
 
 
 
-
-
-    <script>
+<script type="text/javascript">
+    
+    
+    //instance of canvas with fabric
+    var canvas = new fabric.Canvas('tktCanvas');
+    canvas.setBackgroundColor('white');
+    //fabric.Group.prototype.hasControls = false;
+    //too many unpredictable side effects with groups
+    canvas.selection = false;
+    
+    var TckLabel = fabric.util.createClass(fabric.Text, {
+        initialize: function (text2Display, options) {
+            this.callSuper('initialize', text2Display, options);
+            options && this.set('name', options.name);
+            this.set('hasControls', false);
+            this.set('hasRotatingPoint', false);
+            this.set('lockRotation', true);
+            this.set('fontFamily', 'arial');
+            this.set('charSpacing', '0');
+            this.set('id', options.name);
+        },
+        //to factorize when printing is fully tested
+        toObject: function () {
+            var mustachText = '{{'+this.get('id')+'}}';
+            console.log(mustachText);
+            var svgClone = fabric.util.object.clone(this);
+            svgClone.set('text',mustachText);
+            return fabric.util.object.extend(svgClone.callSuper('toObject'), {name: this.name});
+        },
+        toSVG: function () {
+            var mustachText = '{{'+this.get('id')+'}}';
+            console.log(mustachText);
+            var svgClone = fabric.util.object.clone(this);
+            svgClone.set('text',mustachText);
+            return fabric.util.object.extend(svgClone.callSuper('toSVG'));
+        }
         
-        
-        var canvas = new fabric.Canvas('tktCanvas');
-        //canvas.setWidth("150mm", {'cssOnly': true});
-        //canvas.setHeight("50mm", {'cssOnly': true});
-        //canvas.renderAll();
-        canvas.setWidth("900");
-        canvas.setHeight("300");
-        //canvas.setWidth( "<desired width>" );
-        //canvas.setHeight( <desired height> );
-        //canvas.calcOffset();
-//        var styleCanvas = document.getElementsByTagName('canvas')[0];
-//        styleCanvas.style.width  = '900px';
-//        styleCanvas.style.height = '300px';
-        var rect = new fabric.Rect({
-        left: 100,
-        top: 100,
-        fill: 'red',
-        width: 100,
-        height: 100
-      });
-    canvas.add(rect);
+    });
 
-        
-        var objectOnCanvas = [];
-        var rebuildCanvas = new fabric.StaticCanvas('rebuildCanvas');
-        //image adding example
-        //        fabric.Image.fromURL('/images/breizhoneg.png', function (oImg) {
-        //               //scale image down, and flip it, before adding it onto canvas
-        //               oImg.scale(0.5).setFlipX(true);
-        //               canvas.add(oImg);
-        //             });
-        //        
-        // create class for the text elements
-        var TckLabel = fabric.util.createClass(fabric.Text, {
-            initialize: function (text2Display, options) {
-                this.callSuper('initialize', text2Display, options);
-                options && this.set('name', options.name);
-                this.set('hasControls', false);
-                this.set('hasRotatingPoint', false);
-                this.set('lockRotation', true);
-            },
-            toObject: function () {
-                return fabric.util.object.extend(this.callSuper('toObject'), {name: this.name});
+
+    //SCRIPT FOR THE INTERACTIONS
+
+    //menu
+    function changeState(target)
+    {
+        var checkedClass = "checked";
+        target.toggleClass(checkedClass);
+        if (target.hasClass(checkedClass)) {
+            addText2Canvas(target);
+        } else {
+            removeTextFromCanvas(target);
+        }
+    }
+
+    function removeTextFromCanvas(target) {
+        var name = target.attr('id');
+        var myObj = canvas.getObjects();
+        var index = myObj.findIndex(obj => (obj.name === name));
+        canvas.remove(myObj[index]);
+
+    }
+
+    function addText2Canvas(target)
+    {
+        var targetLabel = target.attr("value");
+        var targetName = target.attr("id");
+        var lefty = fabric.util.getRandomInt(0, canvas.width);
+        var topty = fabric.util.getRandomInt(0, canvas.height);
+        var targetFontType = "Arial";
+        var targetFontSize = 20;
+        var text2add = new TckLabel(targetLabel, {fontFamily: targetFontType, fontSize: targetFontSize, left: lefty, top: topty, name: targetName});
+        canvas.add(text2add);
+        var counter =0;
+        while(isOutOfCanvas(text2add) || isIntersecting(text2add)){
+            text2add.setLeft(fabric.util.getRandomInt(0, canvas.width));
+            text2add.setTop(fabric.util.getRandomInt(0, canvas.height));
+            text2add.setCoords();
+            counter +=1;
+            if (counter>1500){
+                changeState(target);
+                break;
             }
-        });
-
-
-
-        // text adding examples
-        //         var text = new fabric.Text('hello world', { fontSize: 14, left: 100, top: 100 });
-        //         text.lockScalingX = true;
-        //         text.lockScalingY = true;
-        //         text.hasControls = false;
-
-        // add parameter to object/JSON
-        //         text.toObject = (function(toObject) {
-        //                return function() {
-        //                    return fabric.util.object.extend(toObject.call(this), {
-        //                        name: this.name
-        //                        });
-        //                    };
-        //                })(text.toObject);
-        //         text.name = "trololilol";
-
-
-        // text adding examples
-        //         var text = new TckLabel("youhou !!!", { fontSize: 14, left: 100, top: 100, name: "UN_VACH_te_DE_SUPER_NOM" });
-        //         canvas.add(text);
-        //         var text2 = new fabric.Text('hello two', { left: 100, top: 100 });
-        //         canvas.add(text2);
-
-        //function to prevent object moving out of the canvas 
-        canvas.on('object:moving', function (e) {
-            var obj = e.target;
-            // if object is too big ignore
-            if (obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width) {
-                return;
-            }
-            obj.setCoords();
-            // top-left  corner
-            if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
-                obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
-                obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
-            }
-            // bot-right corner
-            if (obj.getBoundingRect().top + obj.getBoundingRect().height > obj.canvas.height || obj.getBoundingRect().left + obj.getBoundingRect().width > obj.canvas.width) {
-                obj.top = Math.min(obj.top, obj.canvas.height - obj.getBoundingRect().height + obj.top - obj.getBoundingRect().top);
-                obj.left = Math.min(obj.left, obj.canvas.width - obj.getBoundingRect().width + obj.left - obj.getBoundingRect().left);
-            }
-        });
-
-        // prepare the ticket
-        var myTck;
-        document.getElementById("serializer").onclick = function () {
-            myTck = JSON.stringify(canvas);
-            console.log(myTck);
-            console.log(canvas.toSVG());
-            document.getElementById("reSerializer").disabled = false;
             
-        };
-
-
-        document.getElementById("reSerializer").onclick = function () {
-            rebuildCanvas.loadFromJSON(myTck, function () {
-                rebuildCanvas.renderAll();
-            },
-                    function (o, object) {
-                        console.log(o + ' ' + object);
-                    }
-            );
-        };
-
-        
-        //for test ! Size changer
-
-        document.getElementById("resizer").onclick = function () {
-            var sizWidth = canvas.getWidth();
-            var sizHeight = canvas.getHeight();
-            var zoom = 1
-            if (sizWidth*1.5<1000){
-                zoom = 1.5;
-            }else{
-                zoom = 0.75;
+        }
+        fabric.util.animateColor('#FFF700', '#eee', 500, {
+            onChange: function(val) {
+            text2add.set('backgroundColor', val);
+            canvas.renderAll();
+          },
+          onComplete: function(){
+              text2add.set('backgroundColor', '');
+              canvas.setActiveObject(text2add);
+              console.log(getActiveProp('charSpacing'));
             }
-            var styleCanvas = document.getElementsByTagName('canvas')[0];
-            //styleCanvas.style.width = sizWidth +'px';
-            //styleCanvas.style.height = sizHeight +'px';
-            canvas.setWidth(sizWidth*zoom);
-            canvas.setHeight(sizHeight*zoom);
-            canvas.setZoom(zoom);
-            canvas.getContext();
-            canvas.renderAll();
-        };
+        });
+        //console.log(text2add);
+        //canvas.renderAll();
+    }
+
+    //called on document load
+    function checkedEvent() {
+        $('.addLabelButton.checked').each(function () {
+            addText2Canvas($(this));
+        });
+        $('.addLabelButton').bind('click', function () {
+            changeState($(this));
+        });
+        deselectHandler();
+    }
+
+    function butSetState(object, button){
+        var index = getActiveStyle(button.attr("data-property"), object).indexOf(button.attr("data-value"));
+        if(index>-1){
+            button.addClass("true");
+        }else{
+            button.removeClass("true");
+        }
+    }
+    
+    function toggleButton(button){
+        $(button).toggleClass("true");
+    }
+    
+    function checkChange(inputItem, selectObject, oldProp){
+        if (isOutOfCanvas(selectObject) || isIntersecting(selectObject)){
+            setActiveStyle($(inputItem).attr("data-property"),oldProp);
+            fadeInOut("overlapping and 'out of bounds' forbidden", 3000);
+            //use select-deselect below if any pb (should work, fingers crossed)
+            if ($(inputItem).is(":button"))
+                toggleButton(inputItem);
+            else
+                optionSetState(selectObject, inputItem);
+            //canvas.discardActiveObject();
+            //canvas.setActiveObject(selectObject);
+        }
+    }
+    
+    //for button style
+    function toggleAction(button){
+        toggleButton(button);
+        var value = $(button).attr("data-value");
+        var actual = getActiveStyle($(button).attr("data-property"));
+        var newStyle = ($(button).hasClass("true"))? 
+            actual+' '+value : actual.replace(value,'');
+        newStyle.trim();
+        setActiveStyle($(button).attr("data-property"),newStyle);
+        checkChange(button,canvas.getActiveObject(),actual);
+//        if (isIntersecting(selected)){
+//            setActiveStyle($(button).attr("data-property"),actual);
+//            fadeInOut("overlapping forbidden, please set proper size and/or characteristics", 3000);
+//            //use select-deselect below if any pb (should work, fingers crossed)
+//            toggleButton(button);
+//            //canvas.discardActiveObject();
+//            //canvas.setActiveObject(selected);
+//        }
+    }
+    
+    //for slider or select
+    function optionChange(slider){
+        var oldValue = getActiveProp($(slider).attr("data-property"));
+        setActiveProp($(slider).attr("data-property"),slider.value);
+        checkChange(slider, canvas.getActiveObject(), oldValue);
+    }
+    
+    //initialize the inputs 
+    function optionSetState(object, input){
+        $(input).val(getActiveProp($(input).attr("data-property")));
+    }
+    
+    
+    //canvas objects
+        //events
+    canvas.on('object:selected', selectHandler);
+    canvas.on('object:moving', movingHandler);
+    canvas.on('selection:cleared', deselectHandler);
+    canvas.on('mouse:down', mDownHandler);
+    canvas.on('mouse:up', mUpHandler);
+    
+        //event functions handling
+        //overlap and canvas bounding
+    var marg = -2;
+    function isOutOfCanvas(target){
+        if((target.getLeft() < marg) 
+                    || (target.getTop() < marg) 
+                    || (target.getWidth() + target.getLeft() > (canvasWidth - marg))
+                    || (target.getHeight() + target.getTop() > (canvasHeight - marg)))
+            {
+                return true;
+            }else{
+                return false;
+            }    
+    }
+    
+    function isIntersecting(target){
+        var allObj = canvas.getObjects();
+        var isIt = false;
+        for (ind in allObj){
+            if (allObj[ind]===target){
+                continue;
+            }else{
+                if (target.intersectsWithObject(allObj[ind])){
+                    isIt = true;
+                    break;
+                }
+            }
+        }
+        return isIt;
+    }
+    
+    var goodTop, goodLeft;
+    var canvasWidth = canvas.getWidth(),
+            canvasHeight = canvas.getHeight();
+    
+    
         
-        function getNameFromOption(target) {
-            var name = target.attr("id");
-            var index = name.lastIndexOf(".");
-            name = name.substring(0, index);
-            return name;
+    function mDownHandler(){
+        var selected = canvas.getActiveObject();
+        if (selected){
+            goodTop = selected.getTop();
+            goodLeft = selected.getLeft();
+        };
+    }
+    
+    function mUpHandler(){
+        if (canvas.getActiveObject()){
+            setActiveProp('backgroundColor','');
+        };
+    }
+    
+    function movingHandler() {
+        var bgColor = false;
+        var targ = canvas.getActiveObject();;
+        var lastTop = targ.getTop(),
+            lastLeft = targ.getLeft();
+        targ.setCoords();        
+        if(isOutOfCanvas(targ)
+                    || (isIntersecting(targ))){
+                targ.setLeft(goodLeft);
+                targ.setTop(goodTop);
+                bgColor= true;
+        }else{
+            goodLeft = lastLeft;
+            goodTop = lastTop;
+            bgColor = false;
         }
+        setActiveProp('backgroundColor',bgColor?'red':'');
+    };
 
-        function changeFont(target) {
-            var name = getNameFromOption(target);
-            var myObj = canvas.getObjects();
-            var index = myObj.findIndex(obj => (obj.name === name));
-            console.log(myObj[index]);
-            myObj[index].fontFamily = target.val();
-            canvas.renderAll();
-            //canvas.trigger('object:moving', {target: myObj[index]});
-        }
-
-        function changeFontSize(target) {
-            var name = getNameFromOption(target);
-            var myObj = canvas.getObjects();
-            var index = myObj.findIndex(obj => (obj.name === name));
-            myObj[index].fontSize = target.val();
-            canvas.renderAll();
-            canvas.setActiveObject(canvas.item(index));
-        }
-
-        // put the css-tag and activate the options for the selected label
-        function changeState(target)
-        {
-            var checkedClass = "has-success";
-            target.closest("div").toggleClass(checkedClass);
-            $('[id="' + target.attr("id") + '.font"]').prop("disabled", function (_, val) {
-                return !val;
-            });
-            $('[id="' + target.attr("id") + '.size"]').prop("disabled", function (_, val) {
-                return !val;
-            });
-        }
-
-
-        function addText2Canvas(target)
-        {
-            var targetLabel = target.parent().prev().attr("value");
-            var targetName = target.parent().prev().attr("name");
-            var targetFontType = $('[id="' + target.attr("id") + '.font"]').val();
-            var targetFontSize = $('[id="' + target.attr("id") + '.size"]').val();
-            var lefty = fabric.util.getRandomInt(0, canvas.width);
-            var topty = fabric.util.getRandomInt(0, canvas.height);
-            var text2add = new TckLabel(targetLabel, {fontFamily: targetFontType, fontSize: targetFontSize, left: lefty, top: topty, name: targetName});
-            canvas.add(text2add);
-        }
-
-        function checkedEvent() {
-            $('.addLabelBox:checked').each(function () {
-                changeState($(this));
-                addText2Canvas($(this));
-            });
-            $('.addLabelBox').bind('click', function () {
-                changeState($(this));
-                addText2Canvas($(this));
-            });
-        }
-
-        $(document).on("load", checkedEvent());
-        $('.fontSelection').change(function () {
-            changeFont($(this));
+            
+    function selectHandler() {
+        $('#canControls').find("*").prop("disabled", false);
+        $('#canControls').find(":button").each(function(i){
+            butSetState(canvas.getActiveObject(), $(this));
+            
         });
-        $('.sizeSelection').change(function () {
-            changeFontSize($(this));
+        $('#canControls').find(":input").each(function(i){
+            optionSetState(canvas.getActiveObject(), $(this));
         });
+    };
+    
 
+    function deselectHandler() {
+        $('#canControls').find(":button").each(function(){
+           $(this).removeClass("true"); 
+        });
+        $('#canControls').find("*").prop("disabled", true);
+    }
+    
+            //functions changing prop
+    function getActiveStyle(styleName, object) {
+        object = object || canvas.getActiveObject();
+        if (!object)
+            return '';
 
-    </script>
+        return (object.getSelectionStyles && object.isEditing)
+                ? (object.getSelectionStyles()[styleName] || '')
+                : (object[styleName] || '');
+    }
+    ;
+
+    function setActiveStyle(styleName, value, object) {
+        object = object || canvas.getActiveObject();
+        if (!object)
+            return;
+
+        if (object.setSelectionStyles && object.isEditing) {
+            var style = {};
+            style[styleName] = value;
+            object.setSelectionStyles(style);
+            object.setCoords();
+        } else {
+            object.set(styleName, value);
+        }
+
+        object.setCoords();
+        canvas.renderAll();
+    }
+    ;
+
+    function getActiveProp(name) {
+        var object = canvas.getActiveObject();
+        if (!object)
+            return '';
+
+        return object[name] || '';
+    }
+
+    function setActiveProp(name, value) {
+        var object = canvas.getActiveObject();
+        if (!object)
+            return;
+        object.set(name, value).setCoords();
+        canvas.renderAll();
+    }   
+
+    
+
+    // js event & menus
+    //check and put on template the mandatory elements, bind the others to an event
+    $(document).on("load", checkedEvent());
+    
+    function fadeInOut(message, d) {
+        $('#flashCanvas').show().text(message);
+        $('#flashCanvas').fadeOut(duration=d);
+    }
+    
+    //button canvas interaction
+    $('#object-remove').on('click',function(event){
+        var $name = canvas.getActiveObject().name;
+        // pass if object is mandatory
+        if ($.contains($('#sf_fieldset_mandatory').get(0),$('input[id="'+$name+'"]').get(0))){
+            fadeInOut("mandatory element cannot be removed", 3000);
+        }else{
+            changeState($($name));
+        }
+    });
+    
+    $('.btn-object-action').on('click', function(event){
+        toggleAction(event.target);
+    });
+    
+    //slider moved, selection changed (canvas)
+    $('.sldr-object-action, .slct-object-action').on('input', function(event){
+        optionChange(event.target);
+    });
+    
+    
+    //upper menu buttons
+    //test print
+    document.getElementById("print").onclick = function () {
+        console.log("printing !!!");
+    };
+    
+    //save ticket to base
+    document.getElementById("serializer").onclick = function () {
+        //myTck = JSON.stringify(canvas);
+        //console.log(myTck);
+        var myTck = canvas.toSVG();
+        console.log(canvas.toObject());
+        console.log(canvas.toSVG());
+        //document.getElementById("print").disabled = false;
+        $('#flash').load(
+                $('#tckTemplate').attr('action'),
+                {event_id: $('input[name=event_id]').val(), datacustom: myTck, ticketheight: $('input[name=ticketHeight]').val(), ticketwidth: $('input[name=ticketWidth]').val()}
+
+        );
+    };
+    
+    //back
+    document.getElementById("back").onclick = function () {
+        document.location.href='/tck_dev.php/ticket/customizeMenu/action.html';
+    };
+    
+</script>

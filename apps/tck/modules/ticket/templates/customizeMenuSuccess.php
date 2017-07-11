@@ -8,13 +8,15 @@
 <?php use_helper('CrossAppLink') ?>
 
 <?php //var_dump($events->getRawValue())?>
+<form action="customize" method="POST">
 <div class='sf_admin_batch_actions_choice'>
     <h3>
         Select a type of template
     </h3>
-    <select id="tempType" class="selectCustom ui-selectmenu ui-widget ui-state-default ui-selectmenu-dropdown ui-selectmenu-status">
-        <option value="">Please choose</option>
+    <select required id="tempType" class="selectCustom ui-selectmenu ui-widget ui-state-default ui-selectmenu-dropdown ui-selectmenu-status">
+        <option value="">please choose</option>
         <option value="therm">thermal printed ticket</option>
+        <option value="dmz">dematerialized ('A' series)</option>
     </select><br>
 </div>
 <br style="clear: both;"> 
@@ -28,6 +30,7 @@
     </select>
     <input id='selButton' value="ok" class="butCustom ui-button ui-state-default ui-corner-all" type="submit">
 </div>
+</form>
 
 
 
@@ -41,22 +44,34 @@
         $('#selecItem option').remove();
         var tempType = $("#tempType");
         switch(tempType.val()){
+            //Keep options in case of huge differences in prod for thermal and other tickets
+            //  or if the same menu is called for badges, member cards, etc.
+            //  If not remove the switch/case.
+            // TODO check param needed and apply the correct algo
             case "therm":
+                //data2link = ;
+                
+            case "dmz":
                 data2link = <?php echo json_encode($events->getRawValue()) ?>;
                 break;
             default :
                 data2link = null;
         }
-
+        //if choice is made for the type, choose the event linked (in case of a ticket)
+        // or any other data set in the above switch
+        var selecItem = $('#selecItem');
         if(data2link!=null){
-            $('#selecItem').prop("disabled", false);
+            selecItem.prop("disabled", false);
+            $('#selButton').prop("disabled", false);
+            selecItem.append(new Option("global template (no event linked)",0));
             for(var key in data2link){
+                //faster than creating another to compare ?
                 for(n in data2link[key])
-                $('#selecItem').append(new Option(data2link[key][n],n));
+                    selecItem.append(new Option(data2link[key][n],n));
             }
         }else {
             $('#selectionText h3').text("Please choose above");
-            $('#selectItem').prop("disabled", true).attr("size", 1); 
+            selecItem.prop("disabled", true).attr("size", 1); 
         }    
         
     });

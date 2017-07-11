@@ -373,32 +373,39 @@ class ticketActions extends sfActions
     require('transaction-form.php');
   }
   
+  protected function comPar2($a, $b){
+        if($a['optional']==$b['optional']){
+            return 0;
+        }
+        return ($a['optional'])?1:-1;
+    }
+  
+  
   // goto customize
   public function executeCustomize(sfWebRequest $request)
   {
-          
-          function comPar2($a, $b){
-              if($a['optional']==$b['optional']){
-                  return 0;
-              }
-              return ($a['optional'])?1:-1;
-          }
-          
           //$this->form = new CustomTicketForm();
           $fileJson = fopen(__DIR__.'/../config/ticketParam.json', 'r');
-          $jsonParam = json_decode(fread($fileJson,filesize(dirname(__FILE__).'/../config/ticketParam.json')), TRUE);
+          $jsonParam = json_decode(fread($fileJson,filesize(__DIR__.'/../config/ticketParam.json')), TRUE);
           fclose($fileJson);
-          uasort($jsonParam, 'comPar2');
+          //treated in the component
+          //uasort($jsonParam, 'comPar2');
           
           $size = array();
             for ($i = 6; $i < 20; $i++) {
                 $size[$i] = $i;
             }
-          $this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
-          $this->param = $jsonParam;
+          // TODO USE THAT FOR GENERALISATION!!  
+          //$this->tckForm =new CustomTicketForm(array(),array('param'=>$jsonParam));
+          
+          //should come from the menu
+          $this->eventId = 43;
+          $this->event = null;
+          $this->json = $jsonParam;
           $this->font = array("Arial"=>"Arial", "Lucida"=>"Lucida", "Helvetica"=>"Helvetica", "Lucida-Console"=>"Lucida Console");
           $this->size = $size;
   }
+  
   //goto customPrint
   public function executeCustomPrint(sfWebRequest $request)
   {
@@ -445,13 +452,6 @@ class ticketActions extends sfActions
   
   //for testing purpose !!!not in prod(?)
   public function executeTesting(sfWebRequest $request){
-      
-      function comPar2($a, $b){
-              if($a['optional']==$b['optional']){
-                  return 0;
-              }
-              return ($a['optional'])?1:-1;
-          }
           
           //$this->form = new CustomTicketForm();
           $fileJson = fopen(__DIR__.'/../config/ticketParam.json', 'r');
@@ -481,12 +481,12 @@ class ticketActions extends sfActions
     $q = Doctrine::getTable('Event')
     ->createQuery('e')
     ->orderBy('translation.name')
-    ->limit($request->getParameter('limit'))
+    ->limit(500)
     ->andWhereIn('e.meta_event_id',array_keys($this->getUser()->getMetaEventsCredentials()));
     
     $this->events = array();
     foreach ( $q->execute() as $event )
-      $this->events[] = [$event->id => $request->hasParameter('with_meta_event') ? $event.' ('.$event->MetaEvent.')' : (string)$event];
+      $this->events[] = [$event->id => $event.' ('.$event->MetaEvent.')'];
       
   }
   //TESTING ONLY

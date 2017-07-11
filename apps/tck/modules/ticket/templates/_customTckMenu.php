@@ -32,9 +32,9 @@ $transaction = $sf_data->getRaw('transaction');
     
     <?php 
     foreach ($mandat as $value) {
-            echo '<div class="">';
+            //echo '<div class="">';
             echo '<input id="'.$value.'" class="addLabelButton checked" type="button" value="'.$value.'" disabled>';
-            echo '</div>';
+            //echo '</div>';
         }
     ?>
     
@@ -44,9 +44,9 @@ $transaction = $sf_data->getRaw('transaction');
     
     <?php 
     foreach ($others as $value) {
-            echo '<div class="">';
+            //echo '<div class="">';
             echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
-            echo '</div>';
+            //echo '</div>';
         }
     ?>
     
@@ -56,9 +56,9 @@ $transaction = $sf_data->getRaw('transaction');
     
     <?php 
     foreach ($manif as $value) {
-            echo '<div class="">';
+            //echo '<div class="">';
             echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
-            echo '</div>';
+            //echo '</div>';
         }
     ?>
     
@@ -68,9 +68,9 @@ $transaction = $sf_data->getRaw('transaction');
     
     <?php 
     foreach ($transaction as $value) {
-            echo '<div class="">';
+            //echo '<div class="">';
             echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
-            echo '</div>';
+            //echo '</div>';
         }
     ?>
     
@@ -80,9 +80,9 @@ $transaction = $sf_data->getRaw('transaction');
     
     <?php 
     foreach ($gauge as $value) {
-            echo '<div class="">';
+            //echo '<div class="">';
             echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
-            echo '</div>';
+            //echo '</div>';
         }
     ?>
     

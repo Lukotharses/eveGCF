@@ -26,7 +26,11 @@ $transaction = $sf_data->getRaw('transaction');
         <a href = "#sf_fieldset_others" class = "ui-tabs-anchor" role = "presentation" tabindex = "-1" id = "ui-id-4">Others</a>
     </li>
 </ul>
-  
+
+ <div class="draggable droppable scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom"><h3>DropZone Controller</h3><br></div>
+    <hr>
+    <div class="draggable droppable scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom"><h3>DropZone Main</h3><br></div>
+    <hr>
 
 <div id="sf_fieldset_mandatory" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
@@ -53,7 +57,9 @@ $transaction = $sf_data->getRaw('transaction');
 </div>
 
 <div id="sf_fieldset_manifestation" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
-    <div>
+   
+    <div class='draggable droppable'>
+        <h3>out of template</h3>
     <?php 
     foreach ($manif as $value) {
             //echo '<div class="">';

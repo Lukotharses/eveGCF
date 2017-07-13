@@ -604,6 +604,15 @@
     
     //drag&drop
     $('#testDrag.draggable').draggable({ cancel: false, revert: true});
-    $('#sf_fieldset_manifestation .draggable').draggable({ cancel: false, revert: true});
-
+    $('#sf_fieldset_manifestation .draggable').draggable({ cancel: false, 
+                                                    revert: "invalid", 
+                                                    helper : "clone",
+                                                    containment : $('#sf_fieldset_manifestation .draggable').parent()
+                                                    
+                                                    });
+    $('#sf_fieldset_manifestation .droppable').droppable({
+                                                drop: function(event, ui) {
+                                                ui.draggable.detach().appendTo($(this));
+                                                }
+                                        });
 </script>

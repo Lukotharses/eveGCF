@@ -108,3 +108,11 @@ body #content #more{
     display: inline-block;
 }
 
+#more .button{
+    
+}
+
+.ui-draggable-handle {
+	-ms-touch-action: none;
+	touch-action: none;
+}

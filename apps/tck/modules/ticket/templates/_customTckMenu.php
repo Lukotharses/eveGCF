@@ -53,15 +53,15 @@ $transaction = $sf_data->getRaw('transaction');
 </div>
 
 <div id="sf_fieldset_manifestation" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
-    
+    <div>
     <?php 
     foreach ($manif as $value) {
             //echo '<div class="">';
-            echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
+            echo '<input id="'.$value.'" class="addLabelButton draggable" type="button" value="'.$value.'">';
             //echo '</div>';
         }
     ?>
-    
+    </div>
 </div>
 
 <div id="sf_fieldset_transaction" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">

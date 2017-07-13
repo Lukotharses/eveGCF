@@ -5,6 +5,7 @@
 <?php use_javascript('/sfAdminThemejRollerPlugin/js/jquery-ui.custom.min.js'); ?>
 <?php use_stylesheet('/css/customize/customize.css') ?>
 <?php use_javascript('/js/customize/fabric.js') ?>
+<?php //use_javascript('/js/customize/jquery-ui.drag.js') ?>
 
 
 
@@ -21,15 +22,19 @@
         <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
 
             <button class="fg-button ui-state-default " id="save" type="button" hidden="true">save</button>
-            <input type="number" name="event_id" value="43" hidden>
-            <input type="text" name="datacustom" hidden>
-            <input type="text" name="description" hidden>
-            <input type="number" name="ticketHeight" value="50" hidden>
-            <input type="number" name="ticketWidth" value="150" hidden>
+            <!-- TODO set values through PHP -->
+            <input type="text" name="controller" id="controller" value="L" hidden>
+            <input type="number" name="contrlWidth" id="contrlWidth" value="40" hidden>
+            <input type="number" name="event_id" id="event_id" value="43" hidden>
+            <input type="text" name="datacustom" id="datacustom" hidden>
+            <input type="text" name="description" id="description" hidden>
+            <input type="number" name="ticketHeight" id="ticketHeight" value="50" hidden>
+            <input type="number" name="ticketWidth" id="ticketWidth" value="150" hidden>
         </form>
     </div>
     <div class="canvas">
-        <canvas id="tktCanvas" width="1200px" height="400px">
+        <!-- TODO set values through PHP -->
+        <canvas id="tktCanvas" width="" height="" style="">
 
         </canvas>
     </div>
@@ -95,7 +100,7 @@
         
     </div>
    
-
+<input id="testDrag" class="draggable" type="button" value="DragMe!">
 </div>
 <div id="sf_admin_container" class="sf_admin_edit ui-widget ui-widget-content ui-corner-all">
     <div class="fg-toolbar ui-widget-header ui-corner-all">
@@ -140,13 +145,80 @@
 <script type="text/javascript">
     
     
+    //set the size of canvas according to full size of user screen
+    var scrWidth = screen.width;
+    var tckRatio = $('#ticketHeight').val()/$('#ticketWidth').val();
+    //not working, hard coded for now
+    var tckWidth = 1000;
+    var pxRatio = tckWidth/$('#ticketWidth').val();
+    //$('#tktCanvas').attr('width', tckWidth).attr('height', tckWidth*tckRatio);
+    
+    fabric.devicePixelRatio = 1;
     //instance of canvas with fabric
     var canvas = new fabric.Canvas('tktCanvas');
+    canvas.setHeight(tckWidth*tckRatio);
+    canvas.setWidth(tckWidth);
+    document.getElementById("tktCanvas").height = tckWidth*tckRatio;
+    document.getElementById("tktCanvas").width = tckWidth;
+    var canvasWidth = canvas.getWidth(),
+            canvasHeight = canvas.getHeight();
     canvas.setBackgroundColor('white');
-    //fabric.Group.prototype.hasControls = false;
     //too many unpredictable side effects with groups
+    //fabric.Group.prototype.hasControls = false;
     canvas.selection = false;
     
+    
+    var controller = $('#controller').val();
+    //if controller, add a virtual rect to bound objects in
+    var rectControl;
+    var containWidth = tckWidth;
+    var containStart = 0,
+            controlStart = 0;
+            pxCtrlWidth = 0;
+    if (controller!==''){
+        //setting all the param, taking care of the R L position of the controller
+        var pxCtrlWidth = pxRatio*$('#contrlWidth').val();
+        containWidth = tckWidth - pxCtrlWidth;
+            //starting point of the controller
+        
+        if (controller=='L'){
+            containStart = pxCtrlWidth;
+        //only R for now, but add here other cases (upper, down, etc(?))
+        }else{
+            controlStart = tckWidth - pxCtrlWidth;
+        }
+        rectControl = {'TL': new fabric.Point(controlStart,0),
+                       'BR': new fabric.Point(controlStart+pxCtrlWidth,canvasHeight)
+                        };
+        var contLine = new fabric.Line([Math.max(controlStart, containStart),0,Math.max(controlStart, containStart),canvasHeight],{
+                stroke: 'blue', strokeWidth: 3, opacity:0.3, selectable: false, excludeFromExport: true
+        });
+        canvas.add(contLine);
+    }
+    //in any case, add a container
+    var rectMain = {'TL': new fabric.Point(containStart,0),
+                       'BR': new fabric.Point(containStart+containWidth,canvasHeight)
+                    };
+    
+    var grid = 10;
+    // create grid
+    for (var i = 0; i < (canvasWidth / grid); i++) {
+      canvas.add(new fabric.Line([ i * grid, 0, i * grid, canvasHeight], {  
+                              stroke: '#ccc', 
+                              selectable: false , 
+                              excludeFromExport: true,
+                              opacity: 0.6
+                            }));
+    };
+    for (var j = 0; j < (canvasHeight / grid); j++){
+        canvas.add(new fabric.Line([ 0, j * grid, canvasWidth, j * grid], { 
+                                stroke: '#ccc',
+                                selectable: false, 
+                                excludeFromExport: true,
+                                opacity: 0.6
+                            }));
+    };
+
     var TckLabel = fabric.util.createClass(fabric.Text, {
         initialize: function (text2Display, options) {
             this.callSuper('initialize', text2Display, options);
@@ -156,19 +228,19 @@
             this.set('lockRotation', true);
             this.set('fontFamily', 'arial');
             this.set('charSpacing', '0');
+            this.set('padding', '-3');
             this.set('id', options.name);
+            this.set('container', options.container);
         },
         //to factorize when printing is fully tested
         toObject: function () {
             var mustachText = '{{'+this.get('id')+'}}';
-            console.log(mustachText);
             var svgClone = fabric.util.object.clone(this);
             svgClone.set('text',mustachText);
             return fabric.util.object.extend(svgClone.callSuper('toObject'), {name: this.name});
         },
         toSVG: function () {
             var mustachText = '{{'+this.get('id')+'}}';
-            console.log(mustachText);
             var svgClone = fabric.util.object.clone(this);
             svgClone.set('text',mustachText);
             return fabric.util.object.extend(svgClone.callSuper('toSVG'));
@@ -199,19 +271,31 @@
 
     }
 
-    function addText2Canvas(target)
+    function addText2Canvas(target, holder='main')
     {
         var targetLabel = target.attr("value");
         var targetName = target.attr("id");
         var lefty = fabric.util.getRandomInt(0, canvas.width);
         var topty = fabric.util.getRandomInt(0, canvas.height);
         var targetFontType = "Arial";
-        var targetFontSize = 20;
-        var text2add = new TckLabel(targetLabel, {fontFamily: targetFontType, fontSize: targetFontSize, left: lefty, top: topty, name: targetName});
+        var targetFontSize = 16;
+        var contain = (holder=='main')?rectMain:rectControl;
+        var text2add = new TckLabel(targetLabel, {
+                                    fontFamily: targetFontType, 
+                                    fontSize: targetFontSize, 
+                                    left: lefty, 
+                                    top: topty, 
+                                    name: targetName,
+                                    container : contain
+                                });
         canvas.add(text2add);
         var counter =0;
-        while(isOutOfCanvas(text2add) || isIntersecting(text2add)){
-            text2add.setLeft(fabric.util.getRandomInt(0, canvas.width));
+        //could be a pb for generalisation, TODO algo review
+        var minLeft = (holder==='main')? containStart:controlStart;
+        var maxLeft = (holder==='main')? containWidth+containStart-text2add.width 
+                                    : controlStart+pxCtrlWidth - text2add.width; 
+        while(isOutOfHolder(text2add) || isIntersecting(text2add)){
+            text2add.setLeft(fabric.util.getRandomInt(minLeft, maxLeft));
             text2add.setTop(fabric.util.getRandomInt(0, canvas.height));
             text2add.setCoords();
             counter +=1;
@@ -219,7 +303,6 @@
                 changeState(target);
                 break;
             }
-            
         }
         fabric.util.animateColor('#FFF700', '#eee', 500, {
             onChange: function(val) {
@@ -229,15 +312,14 @@
           onComplete: function(){
               text2add.set('backgroundColor', '');
               canvas.setActiveObject(text2add);
-              console.log(getActiveProp('charSpacing'));
             }
         });
         //console.log(text2add);
-        //canvas.renderAll();
+        canvas.renderAll();
     }
 
     //called on document load
-    function checkedEvent() {
+    function checkStatePutEvent() {
         $('.addLabelButton.checked').each(function () {
             addText2Canvas($(this));
         });
@@ -247,8 +329,8 @@
         deselectHandler();
     }
 
-    function butSetState(object, button){
-        var index = getActiveStyle(button.attr("data-property"), object).indexOf(button.attr("data-value"));
+    function butSetState(button){
+        var index = getActiveStyle(button.attr("data-property")).indexOf(button.attr("data-value"));
         if(index>-1){
             button.addClass("true");
         }else{
@@ -261,37 +343,30 @@
     }
     
     function checkChange(inputItem, selectObject, oldProp){
-        if (isOutOfCanvas(selectObject) || isIntersecting(selectObject)){
+        if (isOutOfHolder(selectObject) || isIntersecting(selectObject)){
             setActiveStyle($(inputItem).attr("data-property"),oldProp);
             fadeInOut("overlapping and 'out of bounds' forbidden", 3000);
             //use select-deselect below if any pb (should work, fingers crossed)
             if ($(inputItem).is(":button"))
-                toggleButton(inputItem);
+                butSetState(inputItem);
             else
                 optionSetState(selectObject, inputItem);
-            //canvas.discardActiveObject();
-            //canvas.setActiveObject(selectObject);
+//            canvas.discardActiveObject();
+//            canvas.setActiveObject(selectObject);
         }
     }
     
-    //for button style
+    //for button interacting style
     function toggleAction(button){
         toggleButton(button);
         var value = $(button).attr("data-value");
         var actual = getActiveStyle($(button).attr("data-property"));
+        console.log(actual);
         var newStyle = ($(button).hasClass("true"))? 
             actual+' '+value : actual.replace(value,'');
-        newStyle.trim();
+        newStyle = newStyle.trim();
         setActiveStyle($(button).attr("data-property"),newStyle);
         checkChange(button,canvas.getActiveObject(),actual);
-//        if (isIntersecting(selected)){
-//            setActiveStyle($(button).attr("data-property"),actual);
-//            fadeInOut("overlapping forbidden, please set proper size and/or characteristics", 3000);
-//            //use select-deselect below if any pb (should work, fingers crossed)
-//            toggleButton(button);
-//            //canvas.discardActiveObject();
-//            //canvas.setActiveObject(selected);
-//        }
     }
     
     //for slider or select
@@ -301,8 +376,8 @@
         checkChange(slider, canvas.getActiveObject(), oldValue);
     }
     
-    //initialize the inputs 
-    function optionSetState(object, input){
+    //initialize sliders and selects
+    function optionSetState(input){
         $(input).val(getActiveProp($(input).attr("data-property")));
     }
     
@@ -317,24 +392,29 @@
     
         //event functions handling
         //overlap and canvas bounding
-    var marg = -2;
-    function isOutOfCanvas(target){
-        if((target.getLeft() < marg) 
-                    || (target.getTop() < marg) 
-                    || (target.getWidth() + target.getLeft() > (canvasWidth - marg))
-                    || (target.getHeight() + target.getTop() > (canvasHeight - marg)))
-            {
-                return true;
-            }else{
-                return false;
-            }    
+    //var marg = -2;
+    function isOutOfHolder(target){
+        var placed = target.container;
+        return !target.isContainedWithinRect(placed.TL, placed.BR);
+        
+        
+// can be used with canvas without controller
+//        if((target.getLeft() < marg) 
+//                    || (target.getTop() < marg) 
+//                    || (target.getWidth() + target.getLeft() > (canvasWidth - marg))
+//                    || (target.getHeight() + target.getTop() > (canvasHeight - marg)))
+//            {
+//                return true;
+//            }else{
+//                return false;
+//            }    
     }
     
     function isIntersecting(target){
         var allObj = canvas.getObjects();
         var isIt = false;
         for (ind in allObj){
-            if (allObj[ind]===target){
+            if (allObj[ind]===target || allObj[ind].get('type')!=="text"){
                 continue;
             }else{
                 if (target.intersectsWithObject(allObj[ind])){
@@ -347,8 +427,7 @@
     }
     
     var goodTop, goodLeft;
-    var canvasWidth = canvas.getWidth(),
-            canvasHeight = canvas.getHeight();
+    
     
     
         
@@ -368,11 +447,15 @@
     
     function movingHandler() {
         var bgColor = false;
-        var targ = canvas.getActiveObject();;
+        var targ = canvas.getActiveObject();
+        targ.set({
+            left: Math.round(targ.left / grid) * grid,
+            top: Math.round(targ.top / grid) * grid
+        });
         var lastTop = targ.getTop(),
             lastLeft = targ.getLeft();
         targ.setCoords();        
-        if(isOutOfCanvas(targ)
+        if(isOutOfHolder(targ)
                     || (isIntersecting(targ))){
                 targ.setLeft(goodLeft);
                 targ.setTop(goodTop);
@@ -388,12 +471,15 @@
             
     function selectHandler() {
         $('#canControls').find("*").prop("disabled", false);
-        $('#canControls').find(":button").each(function(i){
-            butSetState(canvas.getActiveObject(), $(this));
-            
+        var $name = canvas.getActiveObject().name;
+        if($.contains($('#sf_fieldset_mandatory').get(0),$('input[id="'+$name+'"]').get(0))){
+            $('#object-remove').prop("disabled", true);
+        }
+        $('#canControls .btn-object-action').each(function(i){
+            butSetState($(this));
         });
-        $('#canControls').find(":input").each(function(i){
-            optionSetState(canvas.getActiveObject(), $(this));
+        $('#canControls .sldr-object-action,slct-object-action').each(function(i){
+            optionSetState($(this));
         });
     };
     
@@ -456,7 +542,7 @@
 
     // js event & menus
     //check and put on template the mandatory elements, bind the others to an event
-    $(document).on("load", checkedEvent());
+    $(document).on("load", checkStatePutEvent());
     
     function fadeInOut(message, d) {
         $('#flashCanvas').show().text(message);
@@ -467,10 +553,11 @@
     $('#object-remove').on('click',function(event){
         var $name = canvas.getActiveObject().name;
         // pass if object is mandatory
+        // not necessary if the button stays disabled
         if ($.contains($('#sf_fieldset_mandatory').get(0),$('input[id="'+$name+'"]').get(0))){
             fadeInOut("mandatory element cannot be removed", 3000);
         }else{
-            changeState($($name));
+            changeState($('input[id="'+$name+'"]'));
         }
     });
     
@@ -510,4 +597,13 @@
         document.location.href='/tck_dev.php/ticket/customizeMenu/action.html';
     };
     
+//    $( window ).resize(function() {
+//       canvas.renderAll();
+//       console.log('rendering resize');
+//    });
+    
+    //drag&drop
+    $('#testDrag.draggable').draggable({ cancel: false, revert: true});
+    $('#sf_fieldset_manifestation .draggable').draggable({ cancel: false, revert: true});
+
 </script>

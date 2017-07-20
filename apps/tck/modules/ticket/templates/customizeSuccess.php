@@ -1,7 +1,7 @@
 <?php // use_stylesheet('/css/default.css');  ?>
 <?php use_stylesheet('/css/event.css'); ?>
 <?php // use_stylesheet('/css/manifestation.css');  ?>
-<?php use_stylesheet('/css/view.css'); ?>
+<?php //use_stylesheet('/css/view.css'); ?>
 <?php use_javascript('/sfAdminThemejRollerPlugin/js/jquery-ui.custom.min.js'); ?>
 <?php use_stylesheet('/css/customize/customize.css') ?>
 <?php use_javascript('/js/customize/fabric.js') ?>
@@ -9,49 +9,56 @@
 
 
 
-<div id="more">
-    
-    <div class="buttonGroup ui-state-default" width="100%">
-            <button class="fg-button ui-state-default" id="print" type="button">test print</button>
-            <button class="fg-button ui-state-default" id="serializer" type="button">save template</button>
-            <button class="fg-button ui-state-default" id="back" type="button">back</button>
+<div id="sf_admin_container" class="ui-corner-all">
+
+    <div class="fg-toolbar ui-widget-header ui-corner-all">
+        <div style="display: inline;"><h1>ticket templating</h1></div>
+        
+    </div>
+    <div id="flash" class="sf_admin_flashes ui-widget">
+
+    </div>
+    <div id="sf_admin_header">
+        
+    </div>
+
+    <div id="sf_admin_content">
+
+        <div class="sf_admin_form">
+            <form method="post" autocomplete="off" action="" enctype="multipart/form-data">
+
+
+                <div class="ui-helper-clearfix"></div>
+                <div class="buttonGroup sf_admin_actions_block ui-widget">
+                        <button class="fg-button ui-state-default fg-button-icon-left" id="print" type="button">test print</button>
+                        <button class="fg-button ui-state-default fg-button-icon-left" id="serializer" type="button">save template</button>
+                        <button class="fg-button ui-state-default fg-button-icon-left" id="back" type="button">back</button>
 <!--            TODO-->
 <!--            <button class="fg-button ui-state-default" id="reset" display="inline-block;">reset</bouton>-->
-    </div>
-    <div class="">
-        <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
+                    </div>
 
-            <button class="fg-button ui-state-default " id="save" type="button" hidden="true">save</button>
-            <!-- TODO set values through PHP -->
-            <input type="text" name="controller" id="controller" value="L" hidden>
-            <input type="number" name="contrlWidth" id="contrlWidth" value="40" hidden>
-            <input type="number" name="event_id" id="event_id" value="43" hidden>
-            <input type="text" name="datacustom" id="datacustom" hidden>
-            <input type="text" name="description" id="description" hidden>
-            <input type="number" name="ticketHeight" id="ticketHeight" value="50" hidden>
-            <input type="number" name="ticketWidth" id="ticketWidth" value="150" hidden>
-        </form>
-    </div>
-    <div class="canvas">
-        <!-- TODO set values through PHP -->
-        <canvas id="tktCanvas" width="" height="" style="">
+                <div id="sf_admin_form_tab_menu" class="ui-tabs ui-widget ui-widget-content ui-tabs-vertical ui-helper-clearfix">
+                   
+                    <?php include_component('ticket', 'customTckMenu', array('json' => $json)) ?>
 
-        </canvas>
-    </div>
-    <div class ="objectControl">
+                </div>
+                
+            </form>
+           
+             
+        </div>
+        <div class ="objectControl ui-widget ui-corner-all">
 
-        <div id="canControls">
+        <div id="canControls" class="ui-widget-content" style="padding:3px;">
             
             <p>Select an object on the template to activate controls below</p>
-            
-            <div id="text-controls">
-                <button type="button" class="btn-object-remove" id="object-remove">
+            <span id='flashCanvas' style="color: red; display: none;"></span>
+            <div id="text-controls" class="toolbar ui-controlgroup ui-controlgroup-horizontal ui-helper-clearfix" role="toolbar">
+                <button type="button" class="btn-object-remove ui-controlgroup-item" id="object-remove">
                     Remove
                 </button>
-                <span id='flashCanvas' style="color: red; display: none;"></span>
-                <textarea rows="3" columns="80" hidden></textarea><br>
                 <label for="font-family" style="display:inline-block">Font type:</label>
-                <select id="font-family" class="slct-object-action" data-property="fontFamily">
+                <select id="font-family" class="slct-object-action ui-controlgroup-item" data-property="fontFamily">
                     <option value="arial">Arial</option>
                     <option value="arial narrow">Arial Narrow</option>
                     <option value="times new roman">Times NR</option>
@@ -62,7 +69,7 @@
                 </select>
                 <br>
                 <label for="text-align" style="display:none" >Text align:</label>
-                <select id="text-align" class="slct-object-action" data-property="textAlign" hidden>
+                <select id="text-align" class="slct-object-action ui-controlgroup-item" data-property="textAlign" hidden>
                     <option value="Left">Left</option>
                     <option value="Center">Center</option>
                     <option value="Right">Right</option>
@@ -70,68 +77,46 @@
                 </select>
                 <div>
                     <label for="text-font-size">Font size:</label>
-                    <input value="" min="6" max="120" step="1" id="text-font-size" class="sldr-object-action" data-property="fontSize" type="range">
+                    <input value="" min="6" max="120" step="1" id="text-font-size" class="sldr-object-action ui-controlgroup-item" data-property="fontSize" type="range">
                 </div>
                 <div>
                     <label for="text-line-height" style="display:none">Line height:</label>
-                    <input value="" min="1" max="5" step="0.1" id="text-line-height" class="sldr-object-action" data-property="lineHeight" type="range" hidden>
+                    <input value="" min="1" max="5" step="0.1" id="text-line-height" class="sldr-object-action ui-controlgroup-item" data-property="lineHeight" type="range" hidden>
                 </div>
                 <div>
                     <label for="text-char-spacing">Char spacing:</label>
-                    <input value="" min="-100" max="800" step="10" id="text-char-spacing" class="sldr-object-action" data-property="charSpacing" type="range">
+                    <input value="" min="-100" max="800" step="10" id="text-char-spacing" class="sldr-object-action ui-controlgroup-item" data-property="charSpacing" type="range">
                 </div>
-                <button type="button" class="btn-object-action" id="text-cmd-bold" data-property="fontWeight" data-value="bold">
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-bold" data-property="fontWeight" data-value="bold">
                     Bold
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-italic" data-property="fontStyle" data-value="italic">
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-italic" data-property="fontStyle" data-value="italic">
                     Italic
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-underline" data-property="textDecoration" data-value="underline">
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-underline" data-property="textDecoration" data-value="underline">
                     Underline
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>
                     Linethrough
                 </button>
-                <button type="button" class="btn-object-action" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>
                     Overline
                 </button>
             </div>
         </div>
         
-    </div>
-   
-<input id="testDrag" class="draggable" type="button" value="DragMe!">
-</div>
-<div id="sf_admin_container" class="sf_admin_edit ui-widget ui-widget-content ui-corner-all">
-    <div class="fg-toolbar ui-widget-header ui-corner-all">
-        <h1>Text to add</h1>
-
-    </div>
-    <div id="flash" class="sf_admin_flashes ui-widget">
-
-    </div>
-    <div id="sf_admin_header">
-        To add an element on the template : Choose a category then click on a name.
-    </div>
-
-    <div id="sf_admin_content">
-
-        <div class="sf_admin_form">
-            <form method="post" autocomplete="off" action="" enctype="multipart/form-data">
-
-
-                <div class="ui-helper-clearfix"></div>
-
-
-                <div id="sf_admin_form_tab_menu" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix">
-                    <?php include_component('ticket', 'customTckMenu', array('json' => $json)) ?>
-
-                </div>
-
-            </form>
         </div>
     </div>
+    <div id="templating">
+        
+    <div class="canvas">
+        <!-- TODO set values through PHP -->
+        <canvas id="tktCanvas" width="" height="" style="">
 
+        </canvas>
+    </div>
+    <div id="inputOnTemplate" style="visibility: collapse;"></div>
+    </div>
     <div id="sf_admin_footer">
         The current templating mode is delivered as is. The final user stays responsable of creating a template that respects the laws and regulations concerning his use of tickets.
         Moreover, if the user edits this application's code in any way, it will set free the editor of all legal implications.
@@ -141,7 +126,20 @@
 
 
 
+    <div class="">
+        <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
 
+            <button class="fg-button ui-state-default" id="save" type="button" hidden="true">save</button>
+            <!-- TODO set values through PHP -->
+            <input type="text" name="controller" id="controller" value="L" hidden>
+            <input type="number" name="contrlWidth" id="contrlWidth" value="40" hidden>
+            <input type="number" name="event_id" id="event_id" value="82" hidden>
+            <input type="text" name="datacustom" id="datacustom" hidden>
+            <input type="text" name="description" id="description" hidden>
+            <input type="number" name="ticketHeight" id="ticketHeight" value="50" hidden>
+            <input type="number" name="ticketWidth" id="ticketWidth" value="150" hidden>
+        </form>
+    </div>
 <script type="text/javascript">
     
     
@@ -229,18 +227,19 @@
             this.set('fontFamily', 'arial');
             this.set('charSpacing', '0');
             this.set('padding', '-3');
-            this.set('id', options.name);
+            this.set('id', 'canvas.'+options.name);
             this.set('container', options.container);
+
         },
         //to factorize when printing is fully tested
         toObject: function () {
-            var mustachText = '{{'+this.get('id')+'}}';
+            var mustachText = '{{'+this.get('name')+'}}';
             var svgClone = fabric.util.object.clone(this);
             svgClone.set('text',mustachText);
             return fabric.util.object.extend(svgClone.callSuper('toObject'), {name: this.name});
         },
         toSVG: function () {
-            var mustachText = '{{'+this.get('id')+'}}';
+            var mustachText = '{{'+this.get('name')+'}}';
             var svgClone = fabric.util.object.clone(this);
             svgClone.set('text',mustachText);
             return fabric.util.object.extend(svgClone.callSuper('toSVG'));
@@ -264,9 +263,11 @@
     }
 
     function removeTextFromCanvas(target) {
+        console.log('removing '+target);
         var name = target.attr('id');
+        console.log(name);
         var myObj = canvas.getObjects();
-        var index = myObj.findIndex(obj => (obj.name === name));
+        var index = myObj.findIndex(obj => (obj.id === name));
         canvas.remove(myObj[index]);
 
     }
@@ -286,7 +287,8 @@
                                     left: lefty, 
                                     top: topty, 
                                     name: targetName,
-                                    container : contain
+                                    container : contain,
+                                    
                                 });
         canvas.add(text2add);
         var counter =0;
@@ -323,9 +325,9 @@
         $('.addLabelButton.checked').each(function () {
             addText2Canvas($(this));
         });
-        $('.addLabelButton').bind('click', function () {
-            changeState($(this));
-        });
+//        $('.addLabelButton').bind('click', function () {
+//            changeState($(this));
+//        });
         deselectHandler();
     }
 
@@ -361,7 +363,7 @@
         toggleButton(button);
         var value = $(button).attr("data-value");
         var actual = getActiveStyle($(button).attr("data-property"));
-        console.log(actual);
+        //console.log(actual);
         var newStyle = ($(button).hasClass("true"))? 
             actual+' '+value : actual.replace(value,'');
         newStyle = newStyle.trim();
@@ -389,6 +391,9 @@
     canvas.on('selection:cleared', deselectHandler);
     canvas.on('mouse:down', mDownHandler);
     canvas.on('mouse:up', mUpHandler);
+    
+    var upperCanvas = canvas.getSelectionElement();
+    $(upperCanvas).on('mouseout', outHandler);
     
         //event functions handling
         //overlap and canvas bounding
@@ -429,25 +434,32 @@
     var goodTop, goodLeft;
     
     
-    
+    var canvasObjectMoving = false;
         
     function mDownHandler(){
         var selected = canvas.getActiveObject();
         if (selected){
             goodTop = selected.getTop();
             goodLeft = selected.getLeft();
+            canvasObjectMoving = true;
         };
     }
     
     function mUpHandler(){
         if (canvas.getActiveObject()){
             setActiveProp('backgroundColor','');
+            canvasObjectMoving = false;
         };
     }
-    
-    function movingHandler() {
-        var bgColor = false;
+    //flag drag&drop
+//    var dragdrop = false;
+//    
+//    var draggedDiv = null;
+    //bgColor used as flag
+    var bgColor;
+    function movingHandler() {       
         var targ = canvas.getActiveObject();
+        draggedDiv = targ.name;
         targ.set({
             left: Math.round(targ.left / grid) * grid,
             top: Math.round(targ.top / grid) * grid
@@ -455,17 +467,29 @@
         var lastTop = targ.getTop(),
             lastLeft = targ.getLeft();
         targ.setCoords();        
-        if(isOutOfHolder(targ)
-                    || (isIntersecting(targ))){
+//        console.log('bg '+bgColor);
+//        console.log('isIt '+isIntersecting(targ));
+//        if(bgColor&&!dragdrop&&!isIntersecting(targ)){
+//            console.log("out!");
+//            createDraggable(targ);
+//            dragdrop = true;
+//        }
+        if(isIntersecting(targ)||isOutOfHolder(targ)){
+                
                 targ.setLeft(goodLeft);
                 targ.setTop(goodTop);
                 bgColor= true;
-        }else{
+                
+            }
+        else{
             goodLeft = lastLeft;
             goodTop = lastTop;
             bgColor = false;
+            //dragdrop = false;
         }
+        
         setActiveProp('backgroundColor',bgColor?'red':'');
+        
     };
 
             
@@ -581,9 +605,9 @@
     document.getElementById("serializer").onclick = function () {
         //myTck = JSON.stringify(canvas);
         //console.log(myTck);
-        var myTck = canvas.toSVG();
+        var myTck = canvas.toSVG({width:"100%", height:"100%"});
         console.log(canvas.toObject());
-        console.log(canvas.toSVG());
+        console.log(canvas.toSVG({width:"100%", height:"100%"}));
         //document.getElementById("print").disabled = false;
         $('#flash').load(
                 $('#tckTemplate').attr('action'),
@@ -602,17 +626,69 @@
 //       console.log('rendering resize');
 //    });
     
+ 
+    
+    
     //drag&drop
-    $('#testDrag.draggable').draggable({ cancel: false, revert: true});
-    $('#sf_fieldset_manifestation .draggable').draggable({ cancel: false, 
-                                                    revert: "invalid", 
-                                                    helper : "clone",
-                                                    containment : $('#sf_fieldset_manifestation .draggable').parent()
-                                                    
-                                                    });
-    $('#sf_fieldset_manifestation .droppable').droppable({
+$( window ).on( "load", function() {  
+    var dragFromTabsOptions = { 
+                        drag: function(event,ui){
+                            ui.position.top = event.pageY - 10;
+                            ui.position.left = event.pageX - 30;
+                         },
+
+                        refreshPositions: true,
+                        cancel: false,
+                        zIndex: 100,
+                        revert: "invalid", 
+                        helper: 'clone',
+                        cursor: 'move',
+                        scope: "fromTabs"
+                        
+                    };
+    var dragFromTemplateOptions = Object.assign({}, dragFromTabsOptions);
+    dragFromTemplateOptions.scope = "fromCanvas";
+    
+    $('#sf_fieldset_manifestation .draggable, #sf_fieldset_ticket .draggable, #sf_fieldset_transaction .draggable, #sf_fieldset_gauge .draggable').draggable(dragFromTabsOptions);
+//    $('.draggable').bind('drop', function(event, ui) { $(this).after($(ui.helper).clone().draggable());});
+
+    $('#tktCanvas').droppable({
+                                scope: "fromTabs",
+                                drop: function(event, ui) {
+                                    addText2Canvas(ui.draggable);
+                                    var dropping = ui.draggable.clone(false);
+                                    dropping.attr('name', dropping.attr('id'));
+                                    dropping.attr('id','canvas.'+dropping.attr('id'));
+                                    dropping.draggable(dragFromTemplateOptions);
+                                    dropping.draggable('option', 'appendTo', 'body');
+                                    console.log(dropping);
+                                    dropping.appendTo($('#inputOnTemplate'));
+                                    
+                                    }
+                            });
+    
+    $('#sf_admin_form_tab_menu').droppable({
+                                                tolerance: "pointer",
+                                                scope: "fromCanvas",
                                                 drop: function(event, ui) {
-                                                ui.draggable.detach().appendTo($(this));
+                                                    //console.log(ui.draggable);
+                                                    console.log('drop on adm_form');
+                                                    removeTextFromCanvas(ui.draggable);
+                                                    //ui.draggable.detach();      
                                                 }
                                         });
+    
+});
+
+    function outHandler(e){
+        if (canvasObjectMoving){
+            targName = canvas.getActiveObject().name;
+            e.type = "mousedown.draggable";
+            $('#inputOnTemplate input[id="canvas.'+targName+'"]').trigger(e);
+        }
+    };                                        
+                                   
+ 
+//display
+$(".scrolled").css('height',$("#tabList").height());
 </script>

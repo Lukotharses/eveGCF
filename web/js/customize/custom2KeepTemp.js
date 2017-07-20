@@ -1089,4 +1089,98 @@ use_stylesheet('/css/customize/customize.css');
 
 
     </script>
+    
+    
+    
+  // drag and drop  
+       
+//    var currentObj = null;
+//    $('#templating')
+//    .on("mousemove", function (e) {
+//        if (currentObj) {
+//            currentObj.position({of: e});
+//        }
+//    })
+//    .on('mouseup', function () {
+//        currentObj.remove();
+//        currentObj = null;
+//    });
+//    $('#tktCanvas').on('mouseleave', function(){console.log('out');});
+//    var flagDragging = false;
+//    $(document).on('mouseup', function(){dragdrop=false;});
+//    function createDraggable(target){
+////        var event = new MouseEvent('mousedown', {
+////                                   
+////                                    'bubbles': false,
+////                                    'cancelable': true,
+////                                    'composed':true
+////                                  });
+////        console.log($('#sf_fieldset_transaction input[id="Transaction.id"]'));
+////        $('#sf_fieldset_transaction input[id="Transaction.id"]').trigger(event);
+//        if(!currentObj){
+//            currentObj = $('#sf_admin_content input[id="'+target.name+'"]').clone(false);
+//            currentObj.attr('id', 'onthemove');
+//            currentObj.draggable();
+//            currentObj.trigger('mousedown');
+//            currentObj.trigger('mousemove');
+//            console.log(currentObj);
+//            console.log('in the func');
+//            $('#sf_admin_content input[id="'+target.name+'"]').trigger('mousedown');
+//            $('#sf_admin_content input[id="'+target.name+'"]').trigger('mousemove');
+//            //divCreated.draggable(dragOptions);
+//            //console.log(divCreated);
+//
+//            //divCreated.trigger(event);
+//            currentObj.draggable(dragOptions);
+//            $('#templating').append(currentObj);
+//            currentObj.trigger('dragstart');
+////            currentObj.on('mousemove', function(e){
+////                
+////            });
+//            
+//            console.log(currentObj);
+//
+//        $('body').draggable({
+//            helper: function(e) {
+//              return $('#sf_admin_content input[id="'+target.name+'"]').position({of: e}).trigger('mousemove');
+//            },
+//            stop: function (e,ui) {
+//              ui.helper.remove();
+//            }
+//        });
+        
+        
+        
+//    }
+//    
+//    $('#sf_fieldset_manifestation .draggable, #sf_fieldset_ticket .draggable').on('draggedOut', handleDragOut);
+//    
+//    function handleDragOut(e){
+//        console.log($(this));
+//        $(this).trigger('dragstart');
+//        
+//        //$('#templating').append(createdDiv);
+//        
+//        //createdDiv.trigger('dragstart');
+//    }
+    
+//    $('#tktCanvas').on('mouseleave', function(e){
+//            console.log('out');
+//            if(bgColor){
+//                handleDragOut(e);
+//                console.log('dragged');
+//            }
+//
+//    });
+    
+//    $('#sf_fieldset_transaction input[id="Transaction.id"]').on("createDrag", function(event){
+//        $('#sf_fieldset_transaction input[id="Transaction.id"]').mousedown();
+//    });
+    
+//    console.log($('#sf_fieldset_transaction input[id="Transaction.id"]'));
+//    $('#sf_fieldset_transaction input[id="Transaction.id"]').draggable(dragOptions);
+//    $('#sf_fieldset_transaction input[id="Transaction.type"]').mousedown(function(e){
+//            $('#sf_fieldset_transaction input[id="Transaction.id"]').trigger(e);
+//        });
+    
   

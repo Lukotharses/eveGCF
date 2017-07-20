@@ -11,6 +11,31 @@
 ?>
 <div class="page">
 <div class="ticket">
+<?php 
+$customTemplate = Doctrine_Core::getTable('tckCustom')
+                                    ->findOneByEventId($ticket->Manifestation->event_id);
+error_log(sfConfig::get('app_tickets_print'));
+
+if (sfConfig::get('app_tickets_print')=='custom' && $customTemplate){ 
+
+    $svgBrut = $customTemplate->dataCustom;
+    $regpath = '#{{(.*?)}}#';
+    $svgParsed = preg_replace_callback($regpath,
+                                function($m) use ($ticket){
+                                    $keys = explode('.',$m[1]);
+                                    $var = $ticket;
+                                    foreach ($keys as $key) {
+                                        $var = $var[$key];
+                                    }
+                                    return $var;
+                                },
+                                $svgBrut
+                            );
+    echo $svgParsed;
+    //echo $svgBrut;
+    }
+else{ 
+?>
   <div class="logo"><?php echo image_tag(sfConfig::get('app_tickets_logo'), array('absolute' => true)) ?></div>
   <div class="left">
     <p class="manifid">
@@ -148,5 +173,6 @@
     <p class="nb"><?php echo __('%%nb%% places',array('%%nb%%' => $nb)) ?></p>
     <?php endif ?>
   </div>
+  <?php } ?>
 </div>
 </div>

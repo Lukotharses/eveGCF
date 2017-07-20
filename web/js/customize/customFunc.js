@@ -6,8 +6,6 @@
  *      keyList - string I/O
  *  @returns string keyList
  */
-
-
 function parseJSON2TicketKeys(json, prefix, keyList) {
     for (key in json) {
         if (typeof (json[key]) === "object") {
@@ -27,7 +25,6 @@ function parseJSON2TicketKeys(json, prefix, keyList) {
  * !!! NOT FOR PROD !!!
  * @returns {null}
  */
-
 function getOneTicketSampleForTemplate() {
     var request = new XMLHttpRequest();
 
@@ -55,7 +52,6 @@ function getOneTicketSampleForTemplate() {
  *  change all values of an object
  *  @param object // in this case a ticket
  */
-
 function changeMyValues(object){
      function getAllKeys(o) {
         Object.keys(o).forEach(function (k) {
@@ -93,6 +89,7 @@ function parseJSON2Keys(json, prefix) {
     }
     return keyList;
 }
+
 /**
  * creating param JSON file for the custom printing
  * @param {object} ticketJson object.ticket from any json file

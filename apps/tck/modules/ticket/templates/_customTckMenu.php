@@ -6,7 +6,7 @@ $gauge = $sf_data->getRaw('gauge');
 $transaction = $sf_data->getRaw('transaction');
 
 ?>
-<ul class = "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role = "tablist">
+<ul id="tabList" class = "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header" role = "tablist">
     <li class = "ui-state-default ui-tabs-active ui-state-active ui-corner-all" role = "tab" tabindex = "0" aria-controls = "sf_fieldset_mandatory" aria-labelledby = "ui-id-1" aria-selected = "true">
         <a href = "#sf_fieldset_mandatory" class = "ui-tabs-anchor" role = "presentation" tabindex = "-1" id = "ui-id-1">Mandatory</a>
     </li>
@@ -26,12 +26,6 @@ $transaction = $sf_data->getRaw('transaction');
         <a href = "#sf_fieldset_others" class = "ui-tabs-anchor" role = "presentation" tabindex = "-1" id = "ui-id-4">Others</a>
     </li>
 </ul>
-
- <div class="draggable droppable scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom"><h3>DropZone Controller</h3><br></div>
-    <hr>
-    <div class="draggable droppable scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom"><h3>DropZone Main</h3><br></div>
-    <hr>
-
 <div id="sf_fieldset_mandatory" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
     
     <?php 
@@ -49,7 +43,7 @@ $transaction = $sf_data->getRaw('transaction');
     <?php 
     foreach ($others as $value) {
             //echo '<div class="">';
-            echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
+            echo '<input id="'.$value.'" class="addLabelButton draggable" type="button" value="'.$value.'">';
             //echo '</div>';
         }
     ?>
@@ -58,8 +52,7 @@ $transaction = $sf_data->getRaw('transaction');
 
 <div id="sf_fieldset_manifestation" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
    
-    <div class='draggable droppable'>
-        <h3>out of template</h3>
+   
     <?php 
     foreach ($manif as $value) {
             //echo '<div class="">';
@@ -67,7 +60,7 @@ $transaction = $sf_data->getRaw('transaction');
             //echo '</div>';
         }
     ?>
-    </div>
+
 </div>
 
 <div id="sf_fieldset_transaction" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
@@ -75,7 +68,7 @@ $transaction = $sf_data->getRaw('transaction');
     <?php 
     foreach ($transaction as $value) {
             //echo '<div class="">';
-            echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
+            echo '<input id="'.$value.'" class="addLabelButton draggable" type="button" value="'.$value.'">';
             //echo '</div>';
         }
     ?>
@@ -87,10 +80,14 @@ $transaction = $sf_data->getRaw('transaction');
     <?php 
     foreach ($gauge as $value) {
             //echo '<div class="">';
-            echo '<input id="'.$value.'" class="addLabelButton" type="button" value="'.$value.'">';
+            echo '<input id="'.$value.'" class="addLabelButton draggable" type="button" value="'.$value.'">';
             //echo '</div>';
         }
     ?>
     
+</div>
+
+<div id="sf_fieldset_others" class="scrolled ui-corner-all ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false">
+    <h3>empty</h3>
 </div>
 

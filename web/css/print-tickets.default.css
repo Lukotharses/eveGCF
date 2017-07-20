@@ -171,4 +171,8 @@ span.eur { font-weight: normal; }
   font-size: 75%;
 }
 
+/* custom printing */
+svg {display: block;}
+
+
 @media print { #sfWebDebug { display: none; } }

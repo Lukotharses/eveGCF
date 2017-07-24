@@ -31,7 +31,7 @@ $transaction = $sf_data->getRaw('transaction');
     <?php 
     foreach ($mandat as $value) {
             //echo '<div class="">';
-            echo '<input id="'.$value.'" class="addLabelButton checked" type="button" value="'.$value.'" disabled>';
+            echo '<input id="'.$value.'" class="addLabelButton checked" type="button" value="'.$value.'"  name="'.$value.'" disabled>';
             //echo '</div>';
         }
     ?>

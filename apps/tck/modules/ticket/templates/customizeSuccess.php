@@ -9,7 +9,7 @@
 
 
 
-<div id="sf_admin_container" class="ui-corner-all">
+<div id="sf_admin_container" class="sf_admin_edit ui-widget ui-corner-all">
 
     <div class="fg-toolbar ui-widget-header ui-corner-all">
         <div style="display: inline;"><h1>ticket templating</h1></div>
@@ -28,15 +28,18 @@
             <form method="post" autocomplete="off" action="" enctype="multipart/form-data">
 
 
-                <div class="ui-helper-clearfix"></div>
-                <div class="buttonGroup sf_admin_actions_block ui-widget">
-                        <button class="fg-button ui-state-default fg-button-icon-left" id="print" type="button">test print</button>
-                        <button class="fg-button ui-state-default fg-button-icon-left" id="serializer" type="button">save template</button>
-                        <button class="fg-button ui-state-default fg-button-icon-left" id="back" type="button">back</button>
+                
+                <div class="sf_admin_actions_block ui-widget ui-widget-content" style="float: left;">
+                    
+                    <ul class="sf_admin_actions_form">
+                        <li><button class="fg-button ui-state-default fg-button-icon-left" id="print" type="button"><span class="ui-icon ui-icon-print"></span>test print</button></li>
+                        <li><button class="fg-button ui-state-default fg-button-icon-left" id="serializer" type="button"><span class="ui-icon ui-icon-circle-check"></span>save template</button></li>
+                        <li><button class="fg-button ui-state-default fg-button-icon-left" id="back" type="button"><span class="ui-icon ui-icon-arrowreturnthick-1-w"></span>back</button></li>
+                    </ul>
 <!--            TODO-->
 <!--            <button class="fg-button ui-state-default" id="reset" display="inline-block;">reset</bouton>-->
-                    </div>
-
+                </div>
+                <div class="ui-helper-clearfix"></div>
                 <div id="sf_admin_form_tab_menu" class="ui-tabs ui-widget ui-widget-content ui-tabs-vertical ui-helper-clearfix">
                    
                     <?php include_component('ticket', 'customTckMenu', array('json' => $json)) ?>
@@ -48,15 +51,13 @@
              
         </div>
         <div class ="objectControl ui-widget ui-corner-all">
-
+            
         <div id="canControls" class="ui-widget-content" style="padding:3px;">
             
             <p>Select an object on the template to activate controls below</p>
-            <span id='flashCanvas' style="color: red; display: none;"></span>
+            <span id='flashCanvas' style="color: red; opacity: 0;">Warning text can be inserted here</span>
             <div id="text-controls" class="toolbar ui-controlgroup ui-controlgroup-horizontal ui-helper-clearfix" role="toolbar">
-                <button type="button" class="btn-object-remove ui-controlgroup-item" id="object-remove">
-                    Remove
-                </button>
+                <button type="button" class="btn-object-remove ui-controlgroup-item" id="object-remove">Remove</button>
                 <label for="font-family" style="display:inline-block">Font type:</label>
                 <select id="font-family" class="slct-object-action ui-controlgroup-item" data-property="fontFamily">
                     <option value="arial">Arial</option>
@@ -67,41 +68,29 @@
                     <option value="courier">Courier</option>
                     <option value="impact">Impact</option>
                 </select>
-                <br>
-                <label for="text-align" style="display:none" >Text align:</label>
+                
+                <label for="text-align" hidden>Text align:</label>
                 <select id="text-align" class="slct-object-action ui-controlgroup-item" data-property="textAlign" hidden>
                     <option value="Left">Left</option>
                     <option value="Center">Center</option>
                     <option value="Right">Right</option>
                     <option value="Justify">Justify</option>
                 </select>
-                <div>
+                
                     <label for="text-font-size">Font size:</label>
                     <input value="" min="6" max="120" step="1" id="text-font-size" class="sldr-object-action ui-controlgroup-item" data-property="fontSize" type="range">
-                </div>
-                <div>
+                
                     <label for="text-line-height" style="display:none">Line height:</label>
                     <input value="" min="1" max="5" step="0.1" id="text-line-height" class="sldr-object-action ui-controlgroup-item" data-property="lineHeight" type="range" hidden>
-                </div>
-                <div>
+                
                     <label for="text-char-spacing">Char spacing:</label>
                     <input value="" min="-100" max="800" step="10" id="text-char-spacing" class="sldr-object-action ui-controlgroup-item" data-property="charSpacing" type="range">
-                </div>
-                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-bold" data-property="fontWeight" data-value="bold">
-                    Bold
-                </button>
-                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-italic" data-property="fontStyle" data-value="italic">
-                    Italic
-                </button>
-                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-underline" data-property="textDecoration" data-value="underline">
-                    Underline
-                </button>
-                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>
-                    Linethrough
-                </button>
-                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>
-                    Overline
-                </button>
+                
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-bold" data-property="fontWeight" data-value="bold">Bold</button>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-italic" data-property="fontStyle" data-value="italic">Italic</button>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-underline" data-property="textDecoration" data-value="underline">Underline</button>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-linethrough" data-property="textDecoration" data-value="line-through" hidden>Linethrough</button>
+                <button type="button" class="btn-object-action ui-controlgroup-item" id="text-cmd-overline" data-property="textDecoration" data-value="overline" hidden>Overline</button>
             </div>
         </div>
         
@@ -124,14 +113,12 @@
     </div>
 </div>
 
-
-
     <div class="">
         <form id="tckTemplate" method="post" autocomplete="off" action="<?php echo url_for('ticket/submit') ?>" enctype="multipart/form-data">
 
             <button class="fg-button ui-state-default" id="save" type="button" hidden="true">save</button>
             <!-- TODO set values through PHP -->
-            <input type="text" name="controller" id="controller" value="L" hidden>
+            <input type="text" name="controller" id="controller" value="R" hidden>
             <input type="number" name="contrlWidth" id="contrlWidth" value="40" hidden>
             <input type="number" name="event_id" id="event_id" value="82" hidden>
             <input type="text" name="datacustom" id="datacustom" hidden>
@@ -179,7 +166,7 @@
         containWidth = tckWidth - pxCtrlWidth;
             //starting point of the controller
         
-        if (controller=='L'){
+        if (controller=='R'){
             containStart = pxCtrlWidth;
         //only R for now, but add here other cases (upper, down, etc(?))
         }else{
@@ -227,7 +214,7 @@
             this.set('fontFamily', 'arial');
             this.set('charSpacing', '0');
             this.set('padding', '-3');
-            this.set('id', 'canvas.'+options.name);
+            this.set('id', options.id);
             this.set('container', options.container);
 
         },
@@ -242,6 +229,7 @@
             var mustachText = '{{'+this.get('name')+'}}';
             var svgClone = fabric.util.object.clone(this);
             svgClone.set('text',mustachText);
+            //svgClone.set('id', this.get('name'));
             return fabric.util.object.extend(svgClone.callSuper('toSVG'));
         }
         
@@ -251,6 +239,8 @@
     //SCRIPT FOR THE INTERACTIONS
 
     //menu
+    
+    //bad should be removed after testing
     function changeState(target)
     {
         var checkedClass = "checked";
@@ -263,19 +253,18 @@
     }
 
     function removeTextFromCanvas(target) {
-        console.log('removing '+target);
-        var name = target.attr('id');
-        console.log(name);
+        var id2remove = target.attr('id');
         var myObj = canvas.getObjects();
-        var index = myObj.findIndex(obj => (obj.id === name));
+        var index = myObj.findIndex(obj => (obj.id === id2remove));
         canvas.remove(myObj[index]);
 
     }
 
-    function addText2Canvas(target, holder='main')
+    function addText2Canvas(target, holder='main', position={x:1,y:1})
     {
         var targetLabel = target.attr("value");
-        var targetName = target.attr("id");
+        var targetName = target.attr("name");
+        var targetId = target.attr("id");
         var lefty = fabric.util.getRandomInt(0, canvas.width);
         var topty = fabric.util.getRandomInt(0, canvas.height);
         var targetFontType = "Arial";
@@ -288,9 +277,13 @@
                                     top: topty, 
                                     name: targetName,
                                     container : contain,
-                                    
+                                    id : targetId
                                 });
+        text2add.left = position.x;
+        text2add.top = position.y;
         canvas.add(text2add);
+        console.log('adding');
+        console.log(text2add);
         var counter =0;
         //could be a pb for generalisation, TODO algo review
         var minLeft = (holder==='main')? containStart:controlStart;
@@ -302,8 +295,10 @@
             text2add.setCoords();
             counter +=1;
             if (counter>1500){
-                changeState(target);
-                break;
+                //TODO handle case !2B tested!
+                canvas.remove(text2add);
+                fadeInOut("Please make room before adding !", 8000);
+                return;
             }
         }
         fabric.util.animateColor('#FFF700', '#eee', 500, {
@@ -316,7 +311,7 @@
               canvas.setActiveObject(text2add);
             }
         });
-        //console.log(text2add);
+        console.log(text2add);
         canvas.renderAll();
     }
 
@@ -324,10 +319,10 @@
     function checkStatePutEvent() {
         $('.addLabelButton.checked').each(function () {
             addText2Canvas($(this));
+            if (rectControl){
+                addText2Canvas($(this), 'control');
+            }
         });
-//        $('.addLabelButton').bind('click', function () {
-//            changeState($(this));
-//        });
         deselectHandler();
     }
 
@@ -347,14 +342,16 @@
     function checkChange(inputItem, selectObject, oldProp){
         if (isOutOfHolder(selectObject) || isIntersecting(selectObject)){
             setActiveStyle($(inputItem).attr("data-property"),oldProp);
-            fadeInOut("overlapping and 'out of bounds' forbidden", 3000);
-            //use select-deselect below if any pb (should work, fingers crossed)
-            if ($(inputItem).is(":button"))
-                butSetState(inputItem);
-            else
-                optionSetState(selectObject, inputItem);
-//            canvas.discardActiveObject();
-//            canvas.setActiveObject(selectObject);
+            fadeInOut("overlapping and 'out of bounds' forbidden", 5000);
+            //optionSetState is not working correctly
+//            if ($(inputItem).is(":button"))
+//                butSetState(inputItem);
+//            else{
+//                optionSetState(selectObject, inputItem);
+//                
+//            } 
+            canvas.discardActiveObject();
+            canvas.setActiveObject(selectObject);
         }
     }
     
@@ -363,7 +360,6 @@
         toggleButton(button);
         var value = $(button).attr("data-value");
         var actual = getActiveStyle($(button).attr("data-property"));
-        //console.log(actual);
         var newStyle = ($(button).hasClass("true"))? 
             actual+' '+value : actual.replace(value,'');
         newStyle = newStyle.trim();
@@ -431,11 +427,10 @@
         return isIt;
     }
     
+    //globals for element moving on canvas
     var goodTop, goodLeft;
-    
-    
     var canvasObjectMoving = false;
-        
+ 
     function mDownHandler(){
         var selected = canvas.getActiveObject();
         if (selected){
@@ -445,12 +440,13 @@
         };
     }
     
-    function mUpHandler(){
+    function mUpHandler(event){
         if (canvas.getActiveObject()){
             setActiveProp('backgroundColor','');
             canvasObjectMoving = false;
-        };
+        }
     }
+    
     //flag drag&drop
 //    var dragdrop = false;
 //    
@@ -502,7 +498,7 @@
         $('#canControls .btn-object-action').each(function(i){
             butSetState($(this));
         });
-        $('#canControls .sldr-object-action,slct-object-action').each(function(i){
+        $('#canControls .sldr-object-action,.slct-object-action').each(function(i){
             optionSetState($(this));
         });
     };
@@ -568,20 +564,26 @@
     //check and put on template the mandatory elements, bind the others to an event
     $(document).on("load", checkStatePutEvent());
     
-    function fadeInOut(message, d) {
-        $('#flashCanvas').show().text(message);
-        $('#flashCanvas').fadeOut(duration=d);
-    }
+    var fadeInOut = function (message, d) {
+        var flC = $('#flashCanvas');
+        if (flC.css("opacity") > 0)
+            flC.stop(true, true);
+        $('#flashCanvas').text(message);
+        $('#flashCanvas').fadeTo(100, 1);
+        $('#flashCanvas').fadeTo(duration=d,0);
+    };
     
     //button canvas interaction
     $('#object-remove').on('click',function(event){
-        var $name = canvas.getActiveObject().name;
+        var activeObj = canvas.getActiveObject();
         // pass if object is mandatory
-        // not necessary if the button stays disabled
-        if ($.contains($('#sf_fieldset_mandatory').get(0),$('input[id="'+$name+'"]').get(0))){
-            fadeInOut("mandatory element cannot be removed", 3000);
+        // not necessary if the button stays disabled, keep for safety
+        if ($.contains($('#sf_fieldset_mandatory').get(0),$('input[id="'+activeObj.name+'"]').get(0))){
+            fadeInOut("mandatory element cannot be removed", 5000);
         }else{
-            changeState($('input[id="'+$name+'"]'));
+            var toRemove = $('#templating #inputOnTemplate input[id="'+activeObj.name+'"]').get(0);
+            removeTextFromCanvas(toRemove);
+            toRemove.detach();
         }
     });
     
@@ -611,12 +613,15 @@
         //document.getElementById("print").disabled = false;
         $('#flash').load(
                 $('#tckTemplate').attr('action'),
-                {event_id: $('input[name=event_id]').val(), datacustom: myTck, ticketheight: $('input[name=ticketHeight]').val(), ticketwidth: $('input[name=ticketWidth]').val()}
-
+                {   event_id: $('input[name=event_id]').val(), 
+                    datacustom: myTck, 
+                    ticketheight: $('input[name=ticketHeight]').val(), 
+                    ticketwidth: $('input[name=ticketWidth]').val()
+                }
         );
     };
     
-    //back
+    //back button
     document.getElementById("back").onclick = function () {
         document.location.href='/tck_dev.php/ticket/customizeMenu/action.html';
     };
@@ -627,10 +632,15 @@
 //    });
     
  
-    
+function removGlobal(event, ui){
+    removeTextFromCanvas(ui.draggable);
+    ui.draggable.detach();
+}  
     
     //drag&drop
-$( window ).on( "load", function() {  
+$( window ).on( "load", function() {
+    canvas.on('custom:drop', function(event){});
+    
     var dragFromTabsOptions = { 
                         drag: function(event,ui){
                             ui.position.top = event.pageY - 10;
@@ -644,7 +654,6 @@ $( window ).on( "load", function() {
                         helper: 'clone',
                         cursor: 'move',
                         scope: "fromTabs"
-                        
                     };
     var dragFromTemplateOptions = Object.assign({}, dragFromTabsOptions);
     dragFromTemplateOptions.scope = "fromCanvas";
@@ -653,17 +662,21 @@ $( window ).on( "load", function() {
 //    $('.draggable').bind('drop', function(event, ui) { $(this).after($(ui.helper).clone().draggable());});
 
     $('#tktCanvas').droppable({
+                                tolerance: "pointer",
                                 scope: "fromTabs",
                                 drop: function(event, ui) {
-                                    addText2Canvas(ui.draggable);
+                                    dropPt = {x: event.pageX-event.target.parentNode.offsetLeft - 30, y: event.pageY-event.target.parentNode.offsetTop - 10 };
                                     var dropping = ui.draggable.clone(false);
-                                    dropping.attr('name', dropping.attr('id'));
-                                    dropping.attr('id','canvas.'+dropping.attr('id'));
+                                    //dropping.attr('name', dropping.attr('id'));
+                                    var dropZone = 'main';
+                                    if(rectControl && dropPt.x >= rectControl.TL.x && dropPt.x <= rectControl.BR.x){
+                                        dropZone = 'control';
+                                    }
+                                    dropping.attr('id',dropZone+'.'+dropping.attr('id'));
                                     dropping.draggable(dragFromTemplateOptions);
                                     dropping.draggable('option', 'appendTo', 'body');
-                                    console.log(dropping);
                                     dropping.appendTo($('#inputOnTemplate'));
-                                    
+                                    addText2Canvas(dropping, dropZone, dropPt);
                                     }
                             });
     
@@ -671,20 +684,20 @@ $( window ).on( "load", function() {
                                                 tolerance: "pointer",
                                                 scope: "fromCanvas",
                                                 drop: function(event, ui) {
-                                                    //console.log(ui.draggable);
-                                                    console.log('drop on adm_form');
                                                     removeTextFromCanvas(ui.draggable);
-                                                    //ui.draggable.detach();      
+                                                    ui.draggable.detach();
+                                                    canvasObjectMoving = false;
                                                 }
                                         });
     
 });
 
     function outHandler(e){
-        if (canvasObjectMoving){
-            targName = canvas.getActiveObject().name;
+        if (canvasObjectMoving){   
+            if(targId = canvas.getActiveObject().id){
             e.type = "mousedown.draggable";
-            $('#inputOnTemplate input[id="canvas.'+targName+'"]').trigger(e);
+            $('#inputOnTemplate input[id="'+targId+'"]').trigger(e);
+            }
         }
     };                                        
                                    
